@@ -8,6 +8,9 @@ auto-save-list
 tramp
 .\#*
 
+.lsp-session-v1
+projectile-bookmarks.eld
+
 # Org-mode
 .org-id-locations
 *_archive
@@ -23,6 +26,7 @@ tramp
 /elpa/
 /straight/
 /transient/
+/eln-cache/
 
 # reftex files
 *.rel
