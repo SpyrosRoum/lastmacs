@@ -552,22 +552,18 @@
 
 (use-package
   treemacs-perspective
-  :after (treemacs perspective-mode)
+  :after (treemacs perspective)
   :config (treemacs-set-scope-type 'Perspectives))
 
 ;; (use-package treemacs-magit
-;;   :after (treemacs magit)
-;;   :ensure t)
-
-;; (use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
-;;   :after (treemacs)
-;;   :config (treemacs-set-scope-type 'Tabs))
+;;   :after (treemacs magit))
 ;; --- /Treemacs things ---
 
 (use-package
   perspective
   :bind
   :custom
+  (persp-sort 'created)
   (persp-mode-prefix-key (kbd "C-c M-p")) ; pick your own prefix key here
   :init (persp-mode))
 
