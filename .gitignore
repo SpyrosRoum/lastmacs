@@ -8,6 +8,10 @@ auto-save-list
 tramp
 .\#*
 
+/.cache/
+
+history
+
 .lsp-session-v1
 projectile-bookmarks.eld
 

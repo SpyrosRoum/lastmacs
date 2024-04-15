@@ -55,16 +55,18 @@
     ((recents . 5)
       ;; (bookmarks . 5)
       (projects . 5)
-      ;; (agenda    . 5)
+      ;; (agenda   kj . 5)
       )))
-
 
 (use-package
   emacs
   :init
 
   (setq major-mode-remap-alist
-    '((python-mode . python-ts-mode) (rust-mode . rust-ts-mode)))
+    '
+    ((python-mode . python-ts-mode)
+      (rust-mode . rust-ts-mode)
+      (c-mode . c-ts-mode)))
 
   (setq initial-buffer-choice
     (lambda () (get-buffer-create dashboard-buffer-name)))
@@ -76,6 +78,7 @@
 
   (global-hl-line-mode)
 
+  (menu-bar-mode -1)
   (tool-bar-mode -1)
 
   (blink-cursor-mode 0)
@@ -234,7 +237,9 @@
 (use-package
   lsp-mode
   :init (setq lsp-keymap-prefix "C-c l")
-  :hook (lsp-mode . lsp-enable-which-key-integration)
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration)
+  (c-ts-mode . lsp-deferred)
   :commands (lsp lsp-deferred))
 
 (use-package poetry :init (poetry-tracking-mode))
@@ -292,7 +297,8 @@
   (projectile-mode +1)
   :bind
   (:map projectile-mode-map ("C-c p" . projectile-command-map))
-  (:map projectile-command-map ("b" . consult-project-buffer)))
+  (:map projectile-command-map ("b" . consult-project-buffer))
+  (:map projectile-command-map ("<ESC>" . nil)))
 
 ;; Borrowed from doom emacs ui.el :D
 (defun doom/window-maximize-horizontally ()
@@ -323,6 +329,77 @@
         (windmove-down))
       (delete-window))))
 
+(use-package vterm)
+(use-package
+  vterm-toggle
+  :custom
+  (vterm-toggle-scope 'project)
+  (vterm-toggle-use-dedicated-buffer t)
+  (vterm-toggle-hide-method 'delete-window)
+  (vterm-toggle-fullscreen-p nil)
+
+  :init
+  ;; Show it to the bottom
+  ;; Coppied from vterm-toggle README's,
+  ;; I can maybe make it simpler using prot's video?
+  (add-to-list
+    'display-buffer-alist
+    '
+    (
+      (lambda (buffer-or-name _)
+        (let ((buffer (get-buffer buffer-or-name)))
+          (with-current-buffer buffer
+            (or (equal major-mode 'vterm-mode)
+              (string-prefix-p
+                vterm-buffer-name
+                (buffer-name buffer))))))
+      (display-buffer-reuse-window display-buffer-at-bottom)
+      ;;(display-buffer-reuse-window display-buffer-in-direction)
+      ;;display-buffer-in-direction/direction/dedicated is added in emacs27
+      ;;(direction . bottom)
+      ;;(dedicated . t) ;dedicated is supported in emacs27
+      (reusable-frames . visible)
+      (window-height . 0.3))))
+
+(use-package dirvish :init (dirvish-override-dired-mode))
+
+(defun my/print-workspaces-indexed ()
+  (interactive)
+  (let
+    (
+      (names (nreverse (append (persp-names) nil)))
+      (len (safe-length (persp-names)))
+      (i 0)
+      (str "")
+      (name))
+    (dolist (name names)
+      (setq str (concat str (format "%d: %s | " i name)))
+      (setq i (+ 1 i)))
+    (message "%s" str)))
+
+(defun my/worspace-switch-to-n (n)
+  (let ((len (safe-length (persp-names))))
+    (persp-switch-by-number (- len n))))
+
+(defun my/worspace-switch-to-0 nil
+  (interactive)
+  (my/worspace-switch-to-n 0))
+
+(defun my/worspace-switch-to-1 nil
+  (interactive)
+  (my/worspace-switch-to-n 1))
+
+(defun my/worspace-switch-to-2 nil
+  (interactive)
+  (my/worspace-switch-to-n 2))
+
+(defun my/worspace-switch-to-3 nil
+  (interactive)
+  (my/worspace-switch-to-n 3))
+
+(defun my/worspace-switch-to-4 nil
+  (interactive)
+  (my/worspace-switch-to-n 4))
 
 ;; format: off
 (use-package
@@ -339,14 +416,33 @@
   (general-create-definer spyros-def :keymaps 'spyros-map)
   (spyros-def "" nil)
 
+  (general-def :states '(normal emacs) :keymap lsp-command-map "K" '("Check lsp docs" . lsp-ui-doc-glance))
+
   (spyros-def
     "f" (cons "File" (make-sparse-keymap))
     "fs" '("Save" . save-buffer)
 
-    "p" '(cons "Projects" projectile-command-map)
+    "p" (cons "Projects" projectile-command-map)
+
+    "<TAB>" (cons "Workspaces" (make-sparse-keymap))
+    "<TAB><TAB>" '("List spaces" . my/print-workspaces-indexed)
+    "<TAB>0" '("Switch to 0" . my/worspace-switch-to-0)
+    "<TAB>1" '("Switch to 1" . my/worspace-switch-to-1)
+    "<TAB>2" '("Switch to 2" . my/worspace-switch-to-2)
+    "<TAB>3" '("Switch to 3" . my/worspace-switch-to-3)
+    "<TAB>4" '("Switch to 4" . my/worspace-switch-to-4)
+
+    "h" (cons "Help" (make-sparse-keymap))
+    "hf" '("Function" . helpful-callable)
+    "hv" '("Variable" . helpful-variable)
+    "hk" '("Key" . helpful-key)
 
     "b" (cons "Buffers" (make-sparse-keymap))
     "bd" 'kill-current-buffer
+
+    "o" (cons "Open" (make-sparse-keymap))
+    "ot" '("Toggle terminal" . vterm-toggle-cd)
+    "op" '("Toggle Treemacs" . treemacs)
 
     "w" (cons "Windows" (make-sparse-keymap))
     "wq" 'evil-quit
@@ -361,3 +457,120 @@
     "wT" '("Tear window to new frame" . tear-off-window)
     "wmm" '("Maximise window" . delete-other-windows)))
 ;; format: on
+
+
+;; --- Treemacs things ---
+(use-package
+  treemacs
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    (setq
+      treemacs-collapse-dirs
+      (if treemacs-python-executable
+        3
+        0)
+      treemacs-deferred-git-apply-delay 0.5
+      treemacs-directory-name-transformer #'identity
+      treemacs-display-in-side-window t
+      treemacs-eldoc-display 'simple
+      treemacs-file-event-delay 2000
+      treemacs-file-extension-regex treemacs-last-period-regex-value
+      treemacs-file-follow-delay 0.2
+      treemacs-file-name-transformer #'identity
+      treemacs-follow-after-init t
+      treemacs-expand-after-init t
+      treemacs-find-workspace-method 'find-for-file-or-pick-first
+      treemacs-git-command-pipe ""
+      treemacs-goto-tag-strategy 'refetch-index
+      treemacs-header-scroll-indicators '(nil . "^^^^^^")
+      treemacs-hide-dot-git-directory t
+      treemacs-indentation 2
+      treemacs-indentation-string " "
+      treemacs-is-never-other-window nil
+      treemacs-max-git-entries 5000
+      treemacs-missing-project-action 'ask
+      treemacs-move-forward-on-expand nil
+      treemacs-no-png-images nil
+      treemacs-no-delete-other-windows t
+      treemacs-project-follow-cleanup nil
+      treemacs-persist-file
+      (expand-file-name ".cache/treemacs-persist"
+        user-emacs-directory)
+      treemacs-position 'left
+      treemacs-read-string-input 'from-child-frame
+      treemacs-recenter-distance 0.1
+      treemacs-recenter-after-file-follow nil
+      treemacs-recenter-after-tag-follow nil
+      treemacs-recenter-after-project-jump 'always
+      treemacs-recenter-after-project-expand 'on-distance
+      treemacs-litter-directories '("/node_modules" "/.venv" "/.cask")
+      treemacs-project-follow-into-home nil
+      treemacs-show-cursor nil
+      treemacs-show-hidden-files t
+      treemacs-silent-filewatch nil
+      treemacs-silent-refresh nil
+      treemacs-sorting 'alphabetic-asc
+      treemacs-select-when-already-in-treemacs 'move-back
+      treemacs-space-between-root-nodes t
+      treemacs-tag-follow-cleanup t
+      treemacs-tag-follow-delay 1.5
+      treemacs-text-scale nil
+      treemacs-user-mode-line-format nil
+      treemacs-user-header-line-format nil
+      treemacs-wide-toggle-width 70
+      treemacs-width 35
+      treemacs-width-increment 1
+      treemacs-width-is-initially-locked t
+      treemacs-workspace-switch-cleanup nil)
+
+    ;; The default width and height of the icons is 22 pixels. If you are
+    ;; using a Hi-DPI display, uncomment this to double the icon size.
+    ;;(treemacs-resize-icons 44)
+
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode 'always)
+    (when treemacs-python-executable
+      (treemacs-git-commit-diff-mode t))
+
+    (pcase
+      (cons
+        (not (null (executable-find "git")))
+        (not (null treemacs-python-executable)))
+      (`(t . t) (treemacs-git-mode 'deferred))
+      (`(t . _) (treemacs-git-mode 'simple)))
+
+    (treemacs-hide-gitignored-files-mode nil)))
+
+(use-package treemacs-evil :after (treemacs evil))
+
+(use-package treemacs-projectile :after (treemacs projectile))
+
+(use-package
+  treemacs-perspective
+  :after (treemacs perspective-mode)
+  :config (treemacs-set-scope-type 'Perspectives))
+
+;; (use-package treemacs-magit
+;;   :after (treemacs magit)
+;;   :ensure t)
+
+;; (use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
+;;   :after (treemacs)
+;;   :config (treemacs-set-scope-type 'Tabs))
+;; --- /Treemacs things ---
+
+(use-package
+  perspective
+  :bind
+  :custom
+  (persp-mode-prefix-key (kbd "C-c M-p")) ; pick your own prefix key here
+  :init (persp-mode))
+
+(use-package persp-projectile :init (require 'persp-projectile))
+
+(use-package helpful)
