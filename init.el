@@ -24,11 +24,6 @@
   '(font . "JetBrains Mono Nerd Font-14"))
 (set-face-attribute 'default t :font "JetBrains Mono Nerd Font-14")
 
-(defun my/set-relative-nums ()
-  (display-line-numbers-mode 1)
-  (setq display-line-numbers 'relative))
-(add-hook 'prog-mode-hook #'my/set-relative-nums)
-
 (use-package doom-modeline :init (doom-modeline-mode 1))
 
 (use-package
@@ -44,7 +39,9 @@
   :custom
   (dashboard-banner-logo-title
     "010010000110010101101100011011000110111100001010") ;; "Hello"
-  (dashboard-projects-backend 'projectile)
+  (dashboard-projects-backend 'project-el)
+  (dashboard-projects-switch-function
+    'tabspaces-switch-or-create-workspace)
   (dashboard-startup-banner 'logo)
   (dashboard-display-icons-p t) ; display icons on both GUI and terminal
   (dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
@@ -292,17 +289,17 @@
 ;; To ensure projectile uses ripgrep:
 (use-package rg)
 
-(use-package
-  projectile
-  :init
-  ;; Search for projects in ~/code with depth 2
-  (setq projectile-project-search-path
-    '(("~/code" . 2) "~/build/lastmacs" ("~/Programming" . 2)))
-  (projectile-mode +1)
-  :bind
-  (:map projectile-mode-map ("C-c p" . projectile-command-map))
-  (:map projectile-command-map ("b" . consult-project-buffer))
-  (:map projectile-command-map ("<ESC>" . nil)))
+;; (use-package
+;;   projectile
+;;   :init
+;;   ;; Search for projects in ~/code with depth 2
+;;   (setq projectile-project-search-path
+;;     '(("~/code" . 2) "~/build/lastmacs" ("~/Programming" . 2)))
+;;   (projectile-mode +1)
+;;   :bind
+;;   (:map projectile-mode-map ("C-c p" . projectile-command-map))
+;;   (:map projectile-command-map ("b" . consult-project-buffer))
+;;   (:map projectile-command-map ("<ESC>" . nil)))
 
 ;; Borrowed from doom emacs ui.el :D
 (defun doom/window-maximize-horizontally ()
@@ -367,43 +364,42 @@
 
 (use-package dirvish :init (dirvish-override-dired-mode))
 
-(defun my/print-workspaces-indexed ()
-  (interactive)
-  (let
-    (
-      (names (nreverse (append (persp-names) nil)))
-      (len (safe-length (persp-names)))
-      (i 0)
-      (str "")
-      (name))
-    (dolist (name names)
-      (setq str (concat str (format "%d: %s | " i name)))
-      (setq i (+ 1 i)))
-    (message "%s" str)))
+;; -- Tabspaces --
+(use-package
+  tabspaces
+  :hook (after-init . tabspaces-mode) ;; use this only if you want the minor-mode loaded at startup. 
+  :commands
+  (tabspaces-switch-or-create-workspace
+    tabspaces-open-or-create-project-and-workspace)
+  :bind
+  (:map
+    project-prefix-map
+    ("p" . tabspaces-open-or-create-project-and-workspace))
+  :custom
+  (tabspaces-use-filtered-buffers-as-default t)
+  (tabspaces-default-tab "Default")
+  (tabspaces-remove-to-default t)
+  (tabspaces-include-buffers '("*scratch*"))
+  ;; sessions
+  (tabspaces-session t))
 
-(defun my/worspace-switch-to-n (n)
-  (let ((len (safe-length (persp-names))))
-    (persp-switch-by-number (- len n))))
-
-(defun my/worspace-switch-to-0 nil
-  (interactive)
-  (my/worspace-switch-to-n 0))
-
-(defun my/worspace-switch-to-1 nil
-  (interactive)
-  (my/worspace-switch-to-n 1))
-
-(defun my/worspace-switch-to-2 nil
-  (interactive)
-  (my/worspace-switch-to-n 2))
-
-(defun my/worspace-switch-to-3 nil
-  (interactive)
-  (my/worspace-switch-to-n 3))
-
-(defun my/worspace-switch-to-4 nil
-  (interactive)
-  (my/worspace-switch-to-n 4))
+(defvar tabspaces-command-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C") 'tabspaces-clear-buffers)
+    (define-key map (kbd "b") 'tabspaces-switch-to-buffer)
+    (define-key map (kbd "d") 'tabspaces-close-workspace)
+    (define-key map (kbd "k") 'tabspaces-kill-buffers-close-workspace)
+    (define-key
+      map
+      (kbd "o")
+      'tabspaces-open-or-create-project-and-workspace)
+    (define-key map (kbd "r") 'tabspaces-remove-current-buffer)
+    (define-key map (kbd "R") 'tabspaces-remove-selected-buffer)
+    (define-key map (kbd "s") 'tabspaces-switch-or-create-workspace)
+    (define-key map (kbd "t") 'tabspaces-switch-buffer-and-tab)
+    map)
+  "Keymap for tabspace/workspace commands after `tabspaces-keymap-prefix'.")
+;; -- /Tabspaces --
 
 ;; format: off
 (use-package
@@ -420,36 +416,46 @@
   (general-create-definer spyros-def :keymaps 'spyros-map)
   (spyros-def "" nil)
 
-  (general-def :states '(normal emacs) :keymap lsp-command-map "K" '("Check lsp docs" . lsp-ui-doc-glance))
+  (general-def :states '(normal emacs) "g s SPC" '("Go to chars" . avy-goto-char-timer))
+  (general-def :states '(normal emacs) :keymap lsp-command-map "K"
+    '
+    ("Check lsp docs" .
+      (lambda nil
+        (interactive)
+        (lsp-ui-doc-glance)
+        (lsp-ui-doc-focus-frame))))
 
   (spyros-def
     "f" (cons "File" (make-sparse-keymap))
     "fs" '("Save" . save-buffer)
 
-    "p" (cons "Projects" projectile-command-map)
+    "p" (cons "Projects" project-prefix-map) ;; projectile-command-map)
 
-    "<TAB>" (cons "Workspaces" (make-sparse-keymap))
-    "<TAB><TAB>" '("List spaces" . my/print-workspaces-indexed)
-    "<TAB>0" '("Switch to 0" . my/worspace-switch-to-0)
-    "<TAB>1" '("Switch to 1" . my/worspace-switch-to-1)
-    "<TAB>2" '("Switch to 2" . my/worspace-switch-to-2)
-    "<TAB>3" '("Switch to 3" . my/worspace-switch-to-3)
-    "<TAB>4" '("Switch to 4" . my/worspace-switch-to-4)
+    "<SPC>" '("Find file in project" . project-find-file)
+    "<TAB>" (cons "Workspaces" tabspaces-command-map)
 
     "h" (cons "Help" (make-sparse-keymap))
     "hf" '("Function" . helpful-callable)
     "hv" '("Variable" . helpful-variable)
     "hk" '("Key" . helpful-key)
 
+    "g" (cons "Git" (make-sparse-keymap))
+    "gg" '("Status" . magit-status)
+
     "b" (cons "Buffers" (make-sparse-keymap))
+    "bb" 'consult-project-buffer
     "bd" 'kill-current-buffer
 
     "o" (cons "Open" (make-sparse-keymap))
     "ot" '("Toggle terminal" . vterm-toggle-cd)
     "op" '("Toggle Treemacs" . treemacs)
 
+    "s" (cons "Search" (make-sparse-keymap))
+    "sp" '("Search Project" . consult-ripgrep)
+
     "w" (cons "Windows" (make-sparse-keymap))
     "wq" 'evil-quit
+
     ;; --- Movement ---
     "wh" '("Focus left" . evil-window-left)
     "wj" '("Focus down" . evil-window-down)
@@ -552,15 +558,12 @@
 
 (use-package treemacs-evil :after (treemacs evil))
 
-(use-package treemacs-projectile :after (treemacs projectile))
-
 (use-package
-  treemacs-perspective
-  :after (treemacs perspective)
-  :config (treemacs-set-scope-type 'Perspectives))
+  treemacs-tab-bar
+  :after (treemacs)
+  :config (treemacs-set-scope-type 'Tabs))
 
-;; (use-package treemacs-magit
-;;   :after (treemacs magit))
+(use-package treemacs-magit :after (treemacs magit))
 ;; --- /Treemacs things ---
 
 ;; format: off
@@ -584,15 +587,12 @@
   (global-ligature-mode t))
 ;; format: on
 
-(use-package
-  perspective
-  :bind
-  :custom
-  (persp-sort 'created)
-  (persp-mode-prefix-key (kbd "C-c M-p")) ; pick your own prefix key here
-  :init (persp-mode))
-
-(use-package persp-projectile :init (require 'persp-projectile))
-
 (use-package helpful)
+
+(use-package
+  magit
+  :custom
+  (magit-display-buffer-function
+    'magit-display-buffer-fullframe-status-v1))
+
 (use-package solaire-mode :init (solaire-global-mode +1))
