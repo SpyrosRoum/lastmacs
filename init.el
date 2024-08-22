@@ -595,3 +595,4 @@
 (use-package persp-projectile :init (require 'persp-projectile))
 
 (use-package helpful)
+(use-package solaire-mode :init (solaire-global-mode +1))
