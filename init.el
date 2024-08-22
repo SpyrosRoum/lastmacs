@@ -243,7 +243,10 @@
   (c-ts-mode . lsp-deferred)
   :commands (lsp lsp-deferred))
 
-(use-package poetry :init (poetry-tracking-mode))
+(use-package
+  pet
+  :config (add-hook 'python-base-mode-hook 'pet-mode -10))
+;; (use-package poetry :init (poetry-tracking-mode))
 
 (use-package
   lsp-pyright
