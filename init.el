@@ -233,31 +233,8 @@
     xref-show-definitions-function #'consult-xref))
 
 (use-package
-  lsp-mode
-  :init (setq lsp-keymap-prefix "C-c l")
-  :hook
-  (lsp-mode . lsp-enable-which-key-integration)
-  (c-ts-mode . lsp-deferred)
-  :commands (lsp lsp-deferred))
-
-(use-package
   pet
   :config (add-hook 'python-base-mode-hook 'pet-mode -10))
-;; (use-package poetry :init (poetry-tracking-mode))
-
-(use-package
-  lsp-pyright
-  :hook
-  (python-ts-mode
-    .
-    (lambda ()
-      (require 'lsp-pyright)
-      (lsp-deferred))))
-
-(use-package
-  lsp-ui
-  :custom (lsp-ui-doc-position 'at-point)
-  :commands lsp-ui-mode)
 
 (use-package
   company-mode
@@ -417,13 +394,6 @@
   (spyros-def "" nil)
 
   (general-def :states '(normal emacs) "g s SPC" '("Go to chars" . avy-goto-char-timer))
-  (general-def :states '(normal emacs) :keymap lsp-command-map "K"
-    '
-    ("Check lsp docs" .
-      (lambda nil
-        (interactive)
-        (lsp-ui-doc-glance)
-        (lsp-ui-doc-focus-frame))))
 
   (spyros-def
     "f" (cons "File" (make-sparse-keymap))
