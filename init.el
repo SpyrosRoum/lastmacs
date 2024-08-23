@@ -568,3 +568,6 @@
     'magit-display-buffer-fullframe-status-v1))
 
 (use-package solaire-mode :init (solaire-global-mode +1))
+
+;; Detected by eglot so that it prints pretty docs w/ eldoc 
+(use-package markdown-mode :mode ("README\\.md\\'" . gfm-mode))
