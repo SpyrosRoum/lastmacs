@@ -74,6 +74,8 @@
   ;;     (message (format "%s changed to %s" symbol newval))))
 
   (global-hl-line-mode)
+  (setq display-line-numbers-type 'relative)
+  (global-display-line-numbers-mode)
 
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
