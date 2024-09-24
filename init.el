@@ -109,12 +109,14 @@
 
 (use-package
   evil
-  :custom
-  (evil-want-Y-yank-to-eol t)
-  (evil-undo-system 'undo-fu)
-  (evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (evil-want-keybinding nil)
-  :init (evil-mode 1))
+  :init
+  ;; I initialize these in init with custom-set-variables because they
+  ;; need to be defined before evil loads, and using :custom runs in :config
+  (setq evil-want-Y-yank-to-eol t)
+  (setq evil-undo-system 'undo-fu)
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  (evil-mode 1))
 
 (use-package undo-fu)
 (use-package vundo)
@@ -124,6 +126,12 @@
   :after evil
   :custom (evil-collection-setup-minibuffer t)
   :config (evil-collection-init))
+
+(use-package
+  evil-goggles
+  :config
+  (evil-goggles-mode)
+  (evil-goggles-use-diff-faces))
 
 (use-package
   vertico
@@ -571,3 +579,14 @@
 
 ;; Detected by eglot so that it prints pretty docs w/ eldoc 
 (use-package markdown-mode :mode ("README\\.md\\'" . gfm-mode))
+
+(use-package rust-mode :init (setq rust-mode-treesitter-derive t))
+
+(use-package
+  rustic
+  :after (rust-mode)
+  :config
+  (setq rustic-lsp-client 'eglot)
+  (setq rustic-format-trigger 'on-save)
+  (setq rustic-format-on-save-method 'rustic-format-buffer)
+  :custom (rustic-cargo-use-last-stored-arguments t))
