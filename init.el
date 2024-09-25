@@ -59,6 +59,17 @@
   emacs
   :init
 
+  ;; Configure backups to all be in one place.
+  ;; Also keep more of them
+  (setq backup-directory-alist `(("." . "~/.cache/emacs-saves")))
+  (setq backup-by-copying t)
+  (setq
+    delete-old-versions t
+    kept-new-versions 6
+    kept-old-versions 2
+    version-control t)
+  ;; -- /backups --
+
   (setq major-mode-remap-alist
     '
     ((python-mode . python-ts-mode)
@@ -257,36 +268,8 @@
 
 (use-package company-box :hook (company-mode . company-box-mode))
 
-
-;; We use built in -ts- modes
-;; (use-package
-;;   tree-sitter
-;;   :hook (tree-sitter-after-on-hook . tree-sitter-hl-mode)
-;;   :init (global-tree-sitter-mode))
-
-;; (use-package tree-sitter-langs)
-
-;; (use-package
-;;   treesit-auto
-;;   :custom (treesit-auto-install 'prompt)
-;;   :config
-;;   (treesit-auto-add-to-auto-mode-alist 'all)
-;;   (global-treesit-auto-mode))
-
 ;; To ensure projectile uses ripgrep:
 (use-package rg)
-
-;; (use-package
-;;   projectile
-;;   :init
-;;   ;; Search for projects in ~/code with depth 2
-;;   (setq projectile-project-search-path
-;;     '(("~/code" . 2) "~/build/lastmacs" ("~/Programming" . 2)))
-;;   (projectile-mode +1)
-;;   :bind
-;;   (:map projectile-mode-map ("C-c p" . projectile-command-map))
-;;   (:map projectile-command-map ("b" . consult-project-buffer))
-;;   (:map projectile-command-map ("<ESC>" . nil)))
 
 ;; Borrowed from doom emacs ui.el :D
 (defun doom/window-maximize-horizontally ()
