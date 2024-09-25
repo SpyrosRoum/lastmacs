@@ -534,6 +534,10 @@
 (use-package treemacs-evil :after (treemacs evil))
 
 (use-package
+  treemacs-nerd-icons
+  :config (treemacs-load-theme "nerd-icons"))
+
+(use-package
   treemacs-tab-bar
   :after (treemacs)
   :config (treemacs-set-scope-type 'Tabs))
