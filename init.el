@@ -59,6 +59,8 @@
   emacs
   :init
 
+  (xterm-mouse-mode 1)
+
   (dolist
     (mode
       '
