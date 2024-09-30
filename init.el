@@ -4,6 +4,10 @@
 
 (setq straight-use-package-by-default t)
 
+;; This needs to be one of the first things to ensure there is no
+;; version missmatch with org-roam
+(straight-use-package '(org :type git :depth 1))
+
 (use-package
   doom-themes
   :config
@@ -603,3 +607,14 @@
   (setq rustic-format-trigger 'on-save)
   (setq rustic-format-on-save-method 'rustic-format-buffer)
   :custom (rustic-cargo-use-last-stored-arguments t))
+
+(use-package
+  org-roam
+  :custom (org-roam-directory (file-truename "~/Documents/roam"))
+  :config (org-roam-db-autosync-mode))
+
+(use-package
+  org-modern
+  :init
+  (with-eval-after-load 'org
+    (global-org-modern-mode)))
