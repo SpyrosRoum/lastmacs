@@ -8,6 +8,8 @@
 ;; version missmatch with org-roam
 (straight-use-package '(org :type git :depth 1))
 
+(use-package gcmh :init (gcmh-mode 1))
+
 (use-package
   doom-themes
   :config
