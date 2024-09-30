@@ -75,6 +75,9 @@
         eshell-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+  (setq auto-save-file-name-transforms
+    '((".*" "~/.config/emacs/autosave/" t)))
+
   ;; Configure backups to all be in one place.
   ;; Also keep more of them
   (setq backup-directory-alist `(("." . "~/.cache/emacs-saves")))
