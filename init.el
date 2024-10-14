@@ -65,8 +65,12 @@
   emacs
   :init
 
+  (winner-mode 1)
+
   (setq dired-kill-when-opening-new-dired-buffer t)
   (setq dired-listing-switches "-alh")
+
+  (global-subword-mode 1)
 
   (xterm-mouse-mode 1)
 
