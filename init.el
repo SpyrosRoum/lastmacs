@@ -10,6 +10,8 @@
 
 (use-package gcmh :init (gcmh-mode 1))
 
+(use-package avy)
+
 (use-package
   doom-themes
   :config
