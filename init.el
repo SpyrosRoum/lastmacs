@@ -584,3 +584,11 @@
   exec-path-from-shell
   :init (exec-path-from-shell-initialize))
 
+;; compilation-read-command uses `read-shell-command` by default, which doesn't use
+;; completion at all. So I overwrite it to use `completing-read` instead, which seems to work great.
+(defun compilation-read-command (command)
+  (completing-read "Compile command: " compile-history
+    nil nil command
+    (if (equal (car compile-history) command)
+      '(compile-history . 1)
+      'compile-history)))
