@@ -440,7 +440,7 @@
     "bd" 'kill-current-buffer
 
     "o" (cons "Open" (make-sparse-keymap))
-    "ot" '("Toggle terminal" . vterm-toggle-cd)
+    "ot" '("Toggle terminal" . vterm-toggle)
     "op" '("Toggle sidebar" . dired-sidebar-toggle-sidebar)
 
     "s" (cons "Search" (make-sparse-keymap))
