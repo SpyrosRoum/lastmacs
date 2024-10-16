@@ -83,7 +83,10 @@
         vterm-mode-hook
         shell-mode-hook
         eshell-mode-hook
-        dired-mode-hook))
+        dired-mode-hook
+        compilation-mode-hook
+        comint-mode-hook
+        helpful-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
   (setq auto-save-file-name-transforms
@@ -565,3 +568,13 @@
     (add-to-list
       'eglot-server-programs
       '(python-base-mode . ("basedpyright-langserver" "--stdio")))))
+
+;; Get color support in compilation mode
+;; via built-in ansi-color.
+;; Check out https://codeberg.org/ideasman42/emacs-fancy-compilation maybe
+(use-package
+  ansi-color
+  :straight nil
+  :ensure nil
+  :hook (compilation-filter . ansi-color-compilation-filter))
+
