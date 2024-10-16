@@ -569,6 +569,8 @@
       'eglot-server-programs
       '(python-base-mode . ("basedpyright-langserver" "--stdio")))))
 
+(use-package dockerfile-mode)
+
 ;; Get color support in compilation mode
 ;; via built-in ansi-color.
 ;; Check out https://codeberg.org/ideasman42/emacs-fancy-compilation maybe
@@ -577,4 +579,8 @@
   :straight nil
   :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
+
+(use-package
+  exec-path-from-shell
+  :init (exec-path-from-shell-initialize))
 
