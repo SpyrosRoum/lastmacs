@@ -284,8 +284,25 @@
     xref-show-definitions-function #'consult-xref))
 
 (use-package
+  auto-virtualenvwrapper
+  :init
+  (add-hook 'python-base-mode-hook #'auto-virtualenvwrapper-activate
+    -10))
+
+(use-package
+  ruff-format
+  :hook (python-base-mode . ruff-format-on-save-mode))
+
+(use-package
   pet
-  :config (add-hook 'python-base-mode-hook 'pet-mode -10))
+  :config
+  (add-hook 'python-base-mode-hook
+    (lambda ()
+      (when-let ((ipython-executable (pet-executable-find "ipython")))
+        (setq-local python-shell-interpreter ipython-executable))
+
+      (pet-mode))
+    -5))
 
 (use-package
   company-mode
