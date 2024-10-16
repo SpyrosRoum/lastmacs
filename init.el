@@ -63,6 +63,11 @@
       ;; (agenda   kj . 5)
       )))
 
+(defun my/clear-line ()
+  (interactive)
+  (beginning-of-line)
+  (kill-line))
+
 (use-package
   emacs
   :init
@@ -145,7 +150,9 @@
   ;; `completion-at-point' is often bound to M-TAB.
   (setq tab-always-indent 'complete)
 
-  (setq scroll-margin 5))
+  (setq scroll-margin 5)
+
+  :bind (:map minibuffer-local-map ("C-u" . my/clear-line)))
 
 (use-package nerd-icons-completion :init (nerd-icons-completion-mode))
 
