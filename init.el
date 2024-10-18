@@ -372,3 +372,13 @@
 (use-package
   exec-path-from-shell
   :init (exec-path-from-shell-initialize))
+
+(use-package
+  smartparens
+  :hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
+  :init
+  (dolist (mode '(prog-mode-hook text-mode-hook markdown-mode-hook))
+    (add-hook mode #'smartparens-mode))
+  :config
+  ;; load default config
+  (require 'smartparens-config))
