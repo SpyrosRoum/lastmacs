@@ -1,15 +1,11 @@
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (and custom-file (file-exists-p custom-file))
-  (load custom-file nil :nomessage))
-
-(setq straight-use-package-by-default t)
+(add-to-list
+  'load-path
+  (expand-file-name "lisp" user-emacs-directory))
+(require 'init-benchmarking)
+(require 'init-emacs)
+(require 'init-evil)
 
 (use-package no-littering :init (no-littering-theme-backups))
-
-;; This needs to be one of the first things to ensure there is no
-;; version missmatch with org-roam
-(straight-use-package '(org :type git :depth 1))
-
 (use-package gcmh :init (gcmh-mode 1))
 
 (use-package avy)
@@ -29,11 +25,6 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(add-to-list
-  'default-frame-alist
-  '(font . "JetBrains Mono Nerd Font-14"))
-(set-face-attribute 'default t :font "JetBrains Mono Nerd Font-14")
-
 (use-package doom-modeline :init (doom-modeline-mode 1))
 
 (use-package
@@ -41,7 +32,6 @@
   :custom (elisp-autofmt-style 'fixed)
   :commands (elisp-autofmt-mode elisp-autofmt-buffer)
   :hook (emacs-lisp-mode . elisp-autofmt-mode))
-
 
 (use-package
   dashboard
@@ -65,123 +55,12 @@
       ;; (agenda   kj . 5)
       )))
 
-(defun my/clear-line ()
-  (interactive)
-  (beginning-of-line)
-  (kill-line))
-
-(use-package
-  emacs
-  :init
-
-  (winner-mode 1)
-
-  (setq dired-kill-when-opening-new-dired-buffer t)
-  (setq dired-listing-switches "-alh")
-
-  (global-subword-mode 1)
-
-  (xterm-mouse-mode 1)
-
-  (dolist
-    (mode
-      '
-      (term-mode-hook
-        vterm-mode-hook
-        shell-mode-hook
-        eshell-mode-hook
-        dired-mode-hook
-        compilation-mode-hook
-        comint-mode-hook
-        helpful-mode-hook))
-    (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-  ;; Configure backups to all be in one place.
-  ;; Also keep more of them
-  (setq backup-directory-alist `(("." . "~/.cache/emacs-saves")))
-  (setq backup-by-copying t)
-  (setq
-    delete-old-versions t
-    kept-new-versions 6
-    kept-old-versions 2
-    version-control t)
-  ;; -- /backups --
-
-  (setq major-mode-remap-alist
-    '
-    ((python-mode . python-ts-mode)
-      (rust-mode . rust-ts-mode)
-      (c-mode . c-ts-mode)))
-
-  (setq initial-buffer-choice
-    (lambda () (get-buffer-create dashboard-buffer-name)))
-
-  ;; (add-variable-watcher
-  ;;   'doom-modeline-mode
-  ;;   (lambda (symbol newval operation where)
-  ;;     (message (format "%s changed to %s" symbol newval))))
-
-  (global-hl-line-mode)
-  (setq display-line-numbers-type 'relative)
-  (global-display-line-numbers-mode)
-
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-
-  (blink-cursor-mode 0)
-
-  ;; Support opening new minibuffers from inside existing minibuffers.
-  (setq enable-recursive-minibuffers t)
-
-  ;; Set better undo limits
-  (setq undo-limit 67108864) ; 64mb.
-  (setq undo-strong-limit 100663296) ; 96mb.
-  (setq undo-outer-limit 1006632960) ; 960mb.
-
-  ;; Emacs 28 and newer: Hide commands in M-x which do not work in the current
-  ;; mode.  Vertico commands are hidden in normal buffers. This setting is
-  ;; useful beyond Vertico.
-  (setq read-extended-command-predicate
-    #'command-completion-default-include-p)
-
-  ;; Enable indentation+completion using the TAB key.
-  ;; `completion-at-point' is often bound to M-TAB.
-  (setq tab-always-indent 'complete)
-
-  (setq scroll-margin 5)
-
-  :bind (:map minibuffer-local-map ("C-u" . my/clear-line)))
-
 (use-package nerd-icons-completion :init (nerd-icons-completion-mode))
 
 (use-package which-key :init (which-key-mode))
 
-(use-package
-  evil
-  :init
-  ;; I initialize these in init with custom-set-variables because they
-  ;; need to be defined before evil loads, and using :custom runs in :config
-  (setq evil-want-Y-yank-to-eol t)
-  (setq evil-undo-system 'undo-fu)
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  (evil-mode 1))
-
 (use-package undo-fu)
 (use-package vundo)
-
-(use-package
-  evil-collection
-  :after evil
-  :custom (evil-collection-setup-minibuffer t)
-  :config (evil-collection-init))
-
-(use-package
-  evil-goggles
-  :config
-  (evil-goggles-mode)
-  (evil-goggles-use-diff-faces))
 
 (use-package
   vertico
@@ -327,35 +206,6 @@
 ;; To ensure projectile uses ripgrep:
 (use-package rg)
 
-;; Borrowed from doom emacs ui.el :D
-(defun doom/window-maximize-horizontally ()
-  "Delete all windows to the left and right of the current window."
-  (interactive)
-  (require 'windmove)
-  (save-excursion
-    (while
-      (ignore-errors
-        (windmove-left))
-      (delete-window))
-    (while
-      (ignore-errors
-        (windmove-right))
-      (delete-window))))
-
-(defun doom/window-maximize-vertically ()
-  "Delete all windows above and below the current window."
-  (interactive)
-  (require 'windmove)
-  (save-excursion
-    (while
-      (ignore-errors
-        (windmove-up))
-      (delete-window))
-    (while
-      (ignore-errors
-        (windmove-down))
-      (delete-window))))
-
 (use-package vterm)
 (use-package
   vterm-toggle
@@ -387,8 +237,6 @@
       ;;(dedicated . t) ;dedicated is supported in emacs27
       (reusable-frames . visible)
       (window-height . 0.3))))
-
-; (use-package dirvish :init (dirvish-override-dired-mode)) 
 
 ;; -- Tabspaces --
 (use-package
@@ -426,67 +274,6 @@
     map)
   "Keymap for tabspace/workspace commands after `tabspaces-keymap-prefix'.")
 ;; -- /Tabspaces --
-
-;; format: off
-(use-package
-  general
-  :after evil
-  :config
-  (general-define-key
-    :states '(normal insert motion emacs)
-    :keymaps 'override
-    :prefix-map 'spyros-map
-    :prefix "SPC"
-    :non-normal-prefix "M-SPC")
-
-  (general-create-definer spyros-def :keymaps 'spyros-map)
-  (spyros-def "" nil)
-
-  (general-def :states '(normal emacs) "g s SPC" '("Go to chars" . avy-goto-char-timer))
-
-  (spyros-def
-    "f" (cons "File" (make-sparse-keymap))
-    "fs" '("Save" . save-buffer)
-
-    "p" (cons "Projects" project-prefix-map) ;; projectile-command-map)
-
-    "<SPC>" '("Find file in project" . project-find-file)
-    "<TAB>" (cons "Workspaces" tabspaces-command-map)
-
-    "h" (cons "Help" (make-sparse-keymap))
-    "hf" '("Function" . helpful-callable)
-    "hv" '("Variable" . helpful-variable)
-    "hk" '("Key" . helpful-key)
-
-    "g" (cons "Git" (make-sparse-keymap))
-    "gg" '("Status" . magit-status)
-
-    "b" (cons "Buffers" (make-sparse-keymap))
-    "bb" 'consult-project-buffer
-    "bd" 'kill-current-buffer
-
-    "o" (cons "Open" (make-sparse-keymap))
-    "ot" '("Toggle terminal" . vterm-toggle)
-    "op" '("Toggle sidebar" . dired-sidebar-toggle-sidebar)
-
-    "s" (cons "Search" (make-sparse-keymap))
-    "sp" '("Search Project" . consult-ripgrep)
-
-    "w" (cons "Windows" (make-sparse-keymap))
-    "wq" 'evil-quit
-
-    ;; --- Movement ---
-    "wh" '("Focus left" . evil-window-left)
-    "wj" '("Focus down" . evil-window-down)
-    "wk" '("Focus up" . evil-window-up)
-    "wl" '("Focus right" . evil-window-right)
-    ;; --- /Movement ---
-    "wv" 'evil-window-vsplit
-    "ws" 'evil-window-split
-    "wT" '("Tear window to new frame" . tear-off-window)
-    "wmm" '("Maximise window" . delete-other-windows)))
-;; format: on
-
 
 ;; format: off
 (use-package ligature
@@ -589,12 +376,3 @@
 (use-package
   exec-path-from-shell
   :init (exec-path-from-shell-initialize))
-
-;; compilation-read-command uses `read-shell-command` by default, which doesn't use
-;; completion at all. So I overwrite it to use `completing-read` instead, which seems to work great.
-(defun compilation-read-command (command)
-  (completing-read "Compile command: " compile-history
-    nil nil command
-    (if (equal (car compile-history) command)
-      '(compile-history . 1)
-      'compile-history)))
