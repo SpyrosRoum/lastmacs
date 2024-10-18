@@ -202,9 +202,6 @@
 
 (use-package company-box :hook (company-mode . company-box-mode))
 
-;; To ensure projectile uses ripgrep:
-(use-package rg)
-
 (use-package vterm)
 (use-package
   vterm-toggle
