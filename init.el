@@ -4,6 +4,8 @@
 
 (setq straight-use-package-by-default t)
 
+(use-package no-littering :init (no-littering-theme-backups))
+
 ;; This needs to be one of the first things to ensure there is no
 ;; version missmatch with org-roam
 (straight-use-package '(org :type git :depth 1))
@@ -93,9 +95,6 @@
         comint-mode-hook
         helpful-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-  (setq auto-save-file-name-transforms
-    '((".*" "~/.config/emacs/autosave/" t)))
 
   ;; Configure backups to all be in one place.
   ;; Also keep more of them

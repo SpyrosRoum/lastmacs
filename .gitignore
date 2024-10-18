@@ -65,3 +65,7 @@ tabsession.el
 
 org-roam.db
 bookmarks
+
+# no-littering
+/etc
+/var
