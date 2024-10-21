@@ -382,3 +382,5 @@
   :config
   ;; load default config
   (require 'smartparens-config))
+
+(use-package git-gutter :init (global-git-gutter-mode +1))
