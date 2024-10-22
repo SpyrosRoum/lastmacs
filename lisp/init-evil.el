@@ -8,8 +8,9 @@
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
 
-  (evil-set-initial-state 'comint-mode 'normal)
-  (evil-mode 1))
+  (evil-mode 1)
+  :config
+  (evil-set-initial-state 'comint-mode 'normal))
 
 (use-package
   evil-collection
