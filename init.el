@@ -24,7 +24,12 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(use-package doom-modeline :init (doom-modeline-mode 1))
+(use-package
+  doom-modeline
+  :custom
+  (doom-modeline-buffer-file-name-style 'relative-from-project)
+  (doom-modeline-column-zero-based nil)
+  :init (doom-modeline-mode 1))
 
 (use-package
   elisp-autofmt
