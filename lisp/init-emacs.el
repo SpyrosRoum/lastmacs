@@ -91,7 +91,7 @@
   (beginning-of-line)
   (kill-line))
 
-(define-key minibuffer-local-map "C-u" 'my/clear-line)
+(define-key minibuffer-local-map (kbd "C-u") 'my/clear-line)
 
 ;; Borrowed from doom emacs ui.el :D
 (defun doom/window-maximize-horizontally ()

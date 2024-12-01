@@ -391,3 +391,7 @@
 (use-package git-gutter :init (global-git-gutter-mode +1))
 
 (use-package lua-mode)
+
+(use-package clojure-mode)
+(use-package cider)
+
