@@ -9,6 +9,8 @@
 
 (use-package avy)
 
+(use-package embark :bind (("C-c ." . embark-act)))
+
 (use-package
   doom-themes
   :config
@@ -23,6 +25,10 @@
   (doom-themes-visual-bell-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
+
+(use-package
+  ef-themes
+  :config (setq ef-themes-to-toggle '(ef-dream ef-elea-dark)))
 
 (use-package
   doom-modeline
