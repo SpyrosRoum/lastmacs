@@ -9,8 +9,6 @@
 
 (use-package avy)
 
-(use-package embark :bind (("C-c ." . embark-act)))
-
 (use-package ef-themes :config (ef-themes-select 'ef-dream))
 
 (use-package
@@ -378,3 +376,12 @@
 
 (use-package clojure-mode)
 (use-package cider)
+
+(use-package embark :bind (("C-c ." . embark-act)))
+
+(use-package
+  embark-consult
+  :ensure t ; only need to install it, embark loads it after consult if found
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package wgrep)
