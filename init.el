@@ -346,17 +346,6 @@
   nerd-icons-dired
   :hook (dired-mode . nerd-icons-dired-mode))
 
-(use-package
-  eglot
-  :straight nil
-  :ensure nil
-  :config
-  ;; Used basedpyright when it's available instead of pyright
-  (when (executable-find "basedpyright-langserver")
-    (add-to-list
-      'eglot-server-programs
-      '(python-base-mode . ("basedpyright-langserver" "--stdio")))))
-
 (use-package dockerfile-mode)
 
 ;; Get color support in compilation mode
