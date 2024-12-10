@@ -9,8 +9,7 @@
   (setq evil-want-keybinding nil)
 
   (evil-mode 1)
-  :config
-  (evil-set-initial-state 'comint-mode 'normal))
+  :config (evil-set-initial-state 'comint-mode 'normal))
 
 (use-package
   evil-collection
