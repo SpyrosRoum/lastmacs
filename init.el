@@ -347,6 +347,7 @@
   :hook (dired-mode . nerd-icons-dired-mode))
 
 (use-package dockerfile-mode)
+(use-package docker-compose-mode)
 
 ;; Get color support in compilation mode
 ;; via built-in ansi-color.
