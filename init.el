@@ -183,7 +183,8 @@
   :config
   (add-hook 'python-base-mode-hook
     (lambda ()
-      (when-let ((ipython-executable (pet-executable-find "ipython")))
+      (when-let*
+        ((ipython-executable (pet-executable-find "ipython")))
         (setq-local python-shell-interpreter ipython-executable))
 
       (pet-mode))
