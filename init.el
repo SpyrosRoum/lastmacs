@@ -385,3 +385,7 @@
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package wgrep)
+
+(use-package hl-todo :config (global-hl-todo-mode))
+
+(use-package olivetti)
