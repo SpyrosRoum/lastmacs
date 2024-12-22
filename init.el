@@ -358,7 +358,10 @@
 
 (use-package
   exec-path-from-shell
-  :init (exec-path-from-shell-initialize))
+  :init (exec-path-from-shell-initialize)
+  :config
+  (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
 
 (use-package
   smartparens
