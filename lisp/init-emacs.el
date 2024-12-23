@@ -136,4 +136,20 @@
   #'compilation-read-command
   :override #'compilation-read-command-with-autocomplete)
 
+;; Copied from magit-extras
+(defun magit-project-status ()
+  "Run `magit-status' in the current project's root."
+  (interactive)
+  (magit-status-setup-buffer (project-root (project-current t))))
+
+(use-package
+  project
+  :straight nil
+  :custom
+  (project-switch-commands
+    '
+    ((project-find-file "Find file")
+      (consult-ripgrep "Find regex" "g")
+      (magit-project-status "Magit" "v"))))
+
 (provide 'init-emacs)
