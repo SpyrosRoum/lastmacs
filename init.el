@@ -243,6 +243,7 @@
     project-prefix-map
     ("p" . tabspaces-open-or-create-project-and-workspace))
   :custom
+  (tabspaces-initialize-project-with-todo nil)
   (tabspaces-use-filtered-buffers-as-default t)
   (tabspaces-default-tab "Default")
   (tabspaces-remove-to-default t)
