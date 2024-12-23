@@ -35,8 +35,6 @@
   (dashboard-banner-logo-title
     "010010000110010101101100011011000110111100001010") ;; "Hello"
   (dashboard-projects-backend 'project-el)
-  (dashboard-projects-switch-function
-    'tabspaces-switch-or-create-workspace)
   (dashboard-startup-banner 'logo)
   (dashboard-display-icons-p t) ; display icons on both GUI and terminal
   (dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
@@ -231,43 +229,19 @@
       (reusable-frames . visible)
       (window-height . 0.3))))
 
-;; -- Tabspaces --
 (use-package
-  tabspaces
-  :hook (after-init . tabspaces-mode) ;; use this only if you want the minor-mode loaded at startup. 
-  :commands
-  (tabspaces-switch-or-create-workspace
-    tabspaces-open-or-create-project-and-workspace)
-  :bind
-  (:map
-    project-prefix-map
-    ("p" . tabspaces-open-or-create-project-and-workspace))
-  :custom
-  (tabspaces-initialize-project-with-todo nil)
-  (tabspaces-use-filtered-buffers-as-default t)
-  (tabspaces-default-tab "Default")
-  (tabspaces-remove-to-default t)
-  (tabspaces-include-buffers '("*scratch*"))
-  ;; sessions
-  (tabspaces-session t))
-
-(defvar tabspaces-command-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C") 'tabspaces-clear-buffers)
-    (define-key map (kbd "b") 'tabspaces-switch-to-buffer)
-    (define-key map (kbd "d") 'tabspaces-close-workspace)
-    (define-key map (kbd "k") 'tabspaces-kill-buffers-close-workspace)
-    (define-key
-      map
-      (kbd "o")
-      'tabspaces-open-or-create-project-and-workspace)
-    (define-key map (kbd "r") 'tabspaces-remove-current-buffer)
-    (define-key map (kbd "R") 'tabspaces-remove-selected-buffer)
-    (define-key map (kbd "s") 'tabspaces-switch-or-create-workspace)
-    (define-key map (kbd "t") 'tabspaces-switch-buffer-and-tab)
-    map)
-  "Keymap for tabspace/workspace commands after `tabspaces-keymap-prefix'.")
-;; -- /Tabspaces --
+  otpp
+  :straight t
+  :after project
+  :init
+  ;; If you like to define some aliases for better user experience
+  (defalias 'one-tab-per-project-mode 'otpp-mode)
+  (defalias 'one-tab-per-project-override-mode 'otpp-override-mode)
+  ;; Enable `otpp-mode` globally
+  (otpp-mode 1)
+  ;; If you want to advice the commands in `otpp-override-commands`
+  ;; to be run in the current's tab (so, current project's) root directory
+  (otpp-override-mode 1))
 
 ;; format: off
 (use-package ligature

@@ -26,7 +26,7 @@
 ;; format: off
 (use-package
   general
-  :after (evil tabspaces magit helpful)
+  :after (evil magit helpful)
   :config
   (general-define-key
     :states '(normal insert motion emacs consult)
@@ -47,7 +47,9 @@
     "p" (cons "Projects" project-prefix-map) ;; projectile-command-map)
 
     "<SPC>" '("Find file in project" . project-find-file)
-    "<TAB>" (cons "Workspaces" tabspaces-command-map)
+
+    "<TAB>" (cons "Tabs" (make-sparse-keymap))
+    "<TAB>s" '("Switch tab" . tab-switch)
 
     "h" (cons "Help" (make-sparse-keymap))
     "hf" '("Function" . helpful-callable)
