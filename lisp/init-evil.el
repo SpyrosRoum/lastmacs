@@ -71,6 +71,7 @@
     "sp" '("Search Project" . consult-ripgrep)
 
     "w" (cons "Windows" (make-sparse-keymap))
+    "wu" '("Undo" . winner-undo)
     "wq" 'evil-quit
 
     ;; --- Movement ---
