@@ -152,4 +152,12 @@
       (consult-ripgrep "Find regex" "g")
       (magit-project-status "Magit" "v"))))
 
+(defun wsl-copy (start end)
+  (interactive "r")
+  (shell-command-on-region start end "clip.exe")
+  (deactivate-mark))
+
+(when (string-match ".*-WSL2" operating-system-release)
+  (global-set-key (kbd "C-c C-c") 'wsl-copy))
+
 (provide 'init-emacs)
