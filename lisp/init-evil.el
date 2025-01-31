@@ -29,7 +29,7 @@
   :after (evil magit helpful)
   :config
   (general-define-key
-    :states '(normal insert motion emacs consult)
+    :states '(normal insert motion consult)
     :keymaps 'override
     :prefix-map 'spyros-map
     :prefix "SPC"
@@ -38,7 +38,7 @@
   (general-create-definer spyros-def :keymaps 'spyros-map)
   (spyros-def "" nil)
 
-  (general-def :states '(normal emacs) "g s SPC" '("Go to chars" . avy-goto-char-timer))
+  (general-def :states '(normal) "g s SPC" '("Go to chars" . avy-goto-char-timer))
 
   (spyros-def
     "f" (cons "File" (make-sparse-keymap))
