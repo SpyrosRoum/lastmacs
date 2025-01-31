@@ -157,7 +157,25 @@
   (shell-command-on-region start end "clip.exe")
   (deactivate-mark))
 
-(when (string-match ".*-WSL2" operating-system-release)
-  (global-set-key (kbd "C-c C-c") 'wsl-copy))
+;; (when (string-match ".*-WSL2" operating-system-release)
+;;   (global-set-key (kbd "C-c C-c") 'wsl-copy))
+
+;; Configure ispell to use hunspell with Greek and English dicts
+(with-eval-after-load 'ispell
+  (setq ispell-program-name "hunspell")
+  (setq ispell-dictionary "en_US,el_GR")
+  ;; ispell-set-spellchecker-params has to be called
+  ;; before ispell-hunspell-add-multi-dic will work
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,el_GR")
+  ;; For saving words to the personal dictionary, don't infer it from
+  ;; the locale, otherwise it would save to ~/.hunspell_de_DE.
+  (setq ispell-personal-dictionary "~/.local/share/hunspell_personal")
+
+  ;; The personal dictionary file has to exist, otherwise hunspell will
+  ;; silently not use it.
+  (unless (file-exists-p ispell-personal-dictionary)
+    (write-region "" nil ispell-personal-dictionary nil 0)))
+;; /ispell
 
 (provide 'init-emacs)
