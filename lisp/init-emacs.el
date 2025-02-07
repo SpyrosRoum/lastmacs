@@ -41,7 +41,8 @@
       dired-mode-hook
       compilation-mode-hook
       comint-mode-hook
-      helpful-mode-hook))
+      helpful-mode-hook
+      pdf-view-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Configure backups to all be in one place.
