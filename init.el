@@ -270,7 +270,8 @@
   magit
   :custom
   (magit-display-buffer-function
-    'magit-display-buffer-fullframe-status-v1))
+    #'magit-display-buffer-fullframe-status-v1)
+  (magit-format-file-function #'magit-format-file-nerd-icons))
 
 (use-package
   solaire-mode
