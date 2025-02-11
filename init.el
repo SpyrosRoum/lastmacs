@@ -368,6 +368,7 @@
 (use-package hl-todo :config (global-hl-todo-mode))
 
 (use-package olivetti)
+
 ;; Typst setup
 (add-to-list
   'treesit-language-source-alist
@@ -396,3 +397,5 @@
         `(,typst-ts-lsp-download-path "tinymist" "typst-lsp")))))
 
 ;; /Typst
+
+(use-package docker :bind ("C-c d" . docker))
