@@ -399,3 +399,5 @@
 ;; /Typst
 
 (use-package docker :bind ("C-c d" . docker))
+
+(use-package just-ts-mode)
