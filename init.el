@@ -9,7 +9,7 @@
 
 (use-package avy)
 
-(use-package ef-themes :config (ef-themes-select 'ef-dream))
+(use-package ef-themes :config (ef-themes-select 'ef-elea-dark))
 
 (use-package
   ef-themes
