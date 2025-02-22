@@ -280,21 +280,20 @@
     #'magit-display-buffer-fullframe-status-v1)
   (magit-format-file-function #'magit-format-file-nerd-icons))
 
-(use-package
-  solaire-mode
-  :init
-  (defun my/solaire-real-buffer-p ()
-    (cond
-      ((string= (buffer-name (buffer-base-buffer)) "*dashboard*")
-        t)
-      ((solaire-mode-real-buffer-p)
-        t)
-      (t
-        nil)))
+;; (use-package
+;;   solaire-mode
+;;   :init
+;;   (defun my/solaire-real-buffer-p ()
+;;     (cond
+;;       ((string= (buffer-name (buffer-base-buffer)) "*dashboard*")
+;;         t)
+;;       ((solaire-mode-real-buffer-p)
+;;         t)
+;;       (t
+;;         nil)))
 
-  (setq solaire-mode-real-buffer-fn 'my/solaire-real-buffer-p)
-
-  (solaire-global-mode +1))
+;;   (setq solaire-mode-real-buffer-fn 'my/solaire-real-buffer-p)
+;;   (solaire-global-mode +1))
 
 ;; Detected by eglot so that it prints pretty docs w/ eldoc 
 (use-package markdown-mode :mode ("README\\.md\\'" . gfm-mode))
