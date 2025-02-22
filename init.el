@@ -40,13 +40,7 @@
   (dashboard-icon-type 'nerd-icons) ; use `nerd-icons' package
   (dashboard-set-heading-icons t)
   (dashboard-set-file-icons t)
-  (dashboard-items
-    '
-    ((recents . 5)
-      ;; (bookmarks . 5)
-      (projects . 5)
-      ;; (agenda   kj . 5)
-      )))
+  (dashboard-items '((recents . 5) (projects . 5))))
 
 (use-package
   nerd-icons-completion
@@ -94,7 +88,6 @@
     :map
     completion-list-mode-map
     ("M-c" . marginalia-cycle))
-
   :init (marginalia-mode))
 
 ;; Persist minibuffer history over Emacs restarts. Vertico sorts by history position.
@@ -324,6 +317,7 @@
 
 (use-package dockerfile-mode)
 (use-package docker-compose-mode)
+(use-package docker :bind ("C-c d" . docker))
 
 ;; Get color support in compilation mode
 ;; via built-in ansi-color.
@@ -362,13 +356,13 @@
 
 (use-package
   embark-consult
-  :ensure t ; only need to install it, embark loads it after consult if found
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package wgrep)
 
 (use-package hl-todo :config (global-hl-todo-mode))
 
+;; Center buffer
 (use-package olivetti)
 
 ;; Typst setup
@@ -399,7 +393,5 @@
         `(,typst-ts-lsp-download-path "tinymist" "typst-lsp")))))
 
 ;; /Typst
-
-(use-package docker :bind ("C-c d" . docker))
 
 (use-package just-ts-mode)
