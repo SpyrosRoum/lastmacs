@@ -298,16 +298,12 @@
 ;; Detected by eglot so that it prints pretty docs w/ eldoc 
 (use-package markdown-mode :mode ("README\\.md\\'" . gfm-mode))
 
-(use-package rust-mode :init (setq rust-mode-treesitter-derive t))
-
 (use-package
-  rustic
-  :after (rust-mode)
-  :config
-  (setq rustic-lsp-client 'eglot)
-  (setq rustic-format-trigger 'on-save)
-  (setq rustic-format-on-save-method 'rustic-format-buffer)
-  :custom (rustic-cargo-use-last-stored-arguments t))
+  rust-mode
+  :hook (rust-mode . eglot-ensure)
+  :init
+  (setq rust-mode-treesitter-derive t)
+  (setq rust-format-on-save t))
 
 (use-package
   org-roam

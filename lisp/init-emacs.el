@@ -58,10 +58,7 @@
 
 ;; Prefer treesitter for some modes
 (setq major-mode-remap-alist
-  '
-  ((python-mode . python-ts-mode)
-    (rust-mode . rust-ts-mode)
-    (c-mode . c-ts-mode)))
+  '((python-mode . python-ts-mode) (c-mode . c-ts-mode)))
 
 ;; Use the dashboard as initial buffer
 (setq initial-buffer-choice
