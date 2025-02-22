@@ -48,7 +48,14 @@
       ;; (agenda   kj . 5)
       )))
 
-(use-package nerd-icons-completion :init (nerd-icons-completion-mode))
+(use-package
+  nerd-icons-completion
+  :after marginalia
+  :config
+  (nerd-icons-completion-mode)
+  (add-hook
+    'marginalia-mode-hook
+    #'nerd-icons-completion-marginalia-setup))
 
 (use-package which-key :init (which-key-mode))
 
