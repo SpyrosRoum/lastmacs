@@ -83,6 +83,7 @@
 (setq tab-always-indent 'complete)
 
 (setq scroll-margin 5)
+(setq scroll-conservatively 1)
 
 (defun my/clear-line ()
   (interactive)
@@ -133,6 +134,17 @@
 (advice-add
   #'compilation-read-command
   :override #'compilation-read-command-with-autocomplete)
+
+(defun spy/compilation-mode-set-scrolling ()
+  "Set some scrolling related vars to prefered values for the *compilation* buffer"
+  (with-current-buffer "*compilation*"
+    (setq-local
+      compilation-scroll-output t
+      scroll-margin 0
+      scroll-conservatively most-positive-fixnum)))
+
+(add-hook 'compilation-mode-hook #'spy/compilation-mode-set-scrolling)
+
 
 ;; Copied from magit-extras
 (defun magit-project-status ()
