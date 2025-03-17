@@ -107,7 +107,7 @@
     ;; C-x bindings in `ctl-x-map'
     ("C-x M-:" . consult-complex-command) ;; orig. repeat-complex-command
     ("C-x b" . consult-buffer) ;; orig. switch-to-buffer
-    ;; ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+    ("C-x p b" . consult-project-buffer) ;; orig. project-switch-to-buffer
     ;; M-g bindings in `goto-map'
     ("M-g e" . consult-compile-error)
     ("M-g f" . consult-flymake) ;; Alternative: consult-flycheck

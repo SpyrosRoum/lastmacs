@@ -188,4 +188,7 @@
     (write-region "" nil ispell-personal-dictionary nil 0)))
 ;; /ispell
 
+
+(keymap-global-set "C-c c" #'compile)
+
 (provide 'init-emacs)
