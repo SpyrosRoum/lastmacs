@@ -187,27 +187,15 @@
     -5))
 
 (use-package
-  corfu
-  :bind (:map corfu-map ("C-y" . corfu-insert))
-  :custom
-  (corfu-cycle t) ;; Enable cycling for `corfu-next/previous'
-  (corfu-quit-at-boundary nil) ;; Never quit at completion boundary
-  (corfu-preview-current nil) ;; Disable current candidate preview
-  (corfu-preselect nil) ;; Preselect the prompt
-  (corfu-popupinfo-delay 1.0)
+  company-mode
+  :bind (:map company-active-map ("C-y" . company-complete-selection))
+  :custom (company-selection-wrap-around t)
+  :init
+  (setq company-tooltip-align-annotations t)
+  (setq company-tooltip-flip-when-above t)
+  (global-company-mode))
 
-  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
-  ;; be used globally (M-/).  See also the customization variable
-  ;; `global-corfu-modes' to exclude certain modes.
-  :init (corfu-popupinfo-mode)
-  :config
-  (setq corfu-auto t)
-  (global-corfu-mode))
-
-(use-package
-  nerd-icons-corfu
-  :after corfu
-  :init (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+(use-package company-box :hook (company-mode . company-box-mode))
 
 (use-package vterm)
 (use-package
@@ -306,7 +294,7 @@
 (use-package
   rust-mode
   :hook (rust-mode . eglot-ensure)
-  :config
+  :init
   (setq rust-mode-treesitter-derive t)
   (setq rust-format-on-save t))
 
