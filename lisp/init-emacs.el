@@ -83,7 +83,7 @@
 (setq tab-always-indent 'complete)
 
 (setq scroll-margin 5)
-(setq scroll-conservatively 1)
+(setq scroll-conservatively most-positive-fixnum)
 
 (defun my/clear-line ()
   (interactive)
@@ -140,8 +140,7 @@
   (with-current-buffer "*compilation*"
     (setq-local
       compilation-scroll-output t
-      scroll-margin 0
-      scroll-conservatively most-positive-fixnum)))
+      scroll-margin 0)))
 
 (add-hook 'compilation-mode-hook #'spy/compilation-mode-set-scrolling)
 
