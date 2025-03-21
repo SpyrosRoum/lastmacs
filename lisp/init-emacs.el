@@ -192,4 +192,13 @@
 
 (keymap-global-set "C-c c" #'compile)
 
+;; Save some space on the laptop by always hidding the tab-bar
+;; and adding a clock in the mode line to make it easier
+;; running full-screen emacs
+(when (string= (system-name) "conquest")
+  (display-battery-mode 1)
+  (setopt display-time-24hr-format t)
+  (display-time-mode 1)
+  (setopt tab-bar-show nil))
+
 (provide 'init-emacs)
