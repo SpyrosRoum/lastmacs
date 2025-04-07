@@ -164,11 +164,11 @@
     xref-show-xrefs-function #'consult-xref
     xref-show-definitions-function #'consult-xref))
 
-;; (use-package
-;;   auto-virtualenvwrapper
-;;   :init
-;;   (add-hook 'python-base-mode-hook #'auto-virtualenvwrapper-activate
-;;     -10))
+(use-package
+  auto-virtualenvwrapper
+  :init
+  (add-hook 'python-base-mode-hook #'auto-virtualenvwrapper-activate
+    -10))
 
 (use-package
   ruff-format
