@@ -143,6 +143,7 @@
       scroll-margin 0)))
 
 (add-hook 'compilation-mode-hook #'spy/compilation-mode-set-scrolling)
+(add-hook 'comint-mode-hook #'spy/compilation-mode-set-scrolling)
 
 
 ;; Copied from magit-extras
