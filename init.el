@@ -365,33 +365,9 @@
 ;; Center buffer
 (use-package olivetti)
 
-;; Typst setup
-(add-to-list
-  'treesit-language-source-alist
-  '(typst "https://github.com/uben0/tree-sitter-typst"))
+(use-package just-ts-mode)
 
 (use-package
-  typst-ts-mode
-  :straight
-  (:type
-    git
-    :host sourcehut
-    :repo "meow_king/typst-ts-mode"
-    :files (:defaults "*.el"))
-  :custom
-  ;; don't add "--open" if you'd like `watch` to be an error detector
-  (typst-ts-mode-watch-options "--open"))
-
-(with-eval-after-load 'eglot
-  (add-to-list
-    'eglot-server-programs
-    `
-    ((typst-ts-mode)
-      .
-      ,
-      (eglot-alternatives
-        `(,typst-ts-lsp-download-path "tinymist" "typst-lsp")))))
-
-;; /Typst
-
-(use-package just-ts-mode)
+  symbol-overlay
+  :hook (prog-mode . symbol-overlay-mode)
+  :init (setq symbol-overlay-scope t))
