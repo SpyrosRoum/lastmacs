@@ -371,3 +371,5 @@
   symbol-overlay
   :hook (prog-mode . symbol-overlay-mode)
   :init (setq symbol-overlay-scope t))
+
+(use-package breadcrumb :config (breadcrumb-mode))
