@@ -349,7 +349,11 @@
 
 (use-package lua-mode)
 
+;; clojure-mode is still needed for some cider things,
+;; but clojure-ts-mode is mainly at use
 (use-package clojure-mode)
+(use-package clojure-ts-mode :hook (clojure-ts-mode . cider-mode))
+
 (use-package cider)
 
 (use-package embark :bind (("C-c ." . embark-act)))
