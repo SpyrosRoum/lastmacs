@@ -377,3 +377,13 @@
   :init (setq symbol-overlay-scope t))
 
 (use-package breadcrumb :config (breadcrumb-mode))
+
+(use-package
+  scratchpads
+  :ensure nil
+  :straight nil
+  :load-path "~/code/emacs-scratchpads"
+  :bind
+  (("C-c s n" . scratchpad-new)
+    ("C-c s o" . scratchpad-open)
+    ("C-c s d" . scratchpad-delete)))
