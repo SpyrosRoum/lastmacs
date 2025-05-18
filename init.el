@@ -9,11 +9,11 @@
 
 (use-package avy)
 
-(use-package ef-themes :config (ef-themes-select 'ef-elea-dark))
-
 (use-package
   ef-themes
-  :config (setq ef-themes-to-toggle '(ef-dream ef-elea-dark)))
+  :config (setq ef-themes-to-toggle '(ef-dream ef-frost))
+  ; ef-elea-dark
+  (ef-themes-select 'ef-dream))
 
 (use-package
   doom-modeline
