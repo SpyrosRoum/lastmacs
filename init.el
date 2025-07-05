@@ -12,7 +12,7 @@
 (use-package
   ef-themes
   :config (setq ef-themes-to-toggle '(ef-dream ef-frost))
-  ; ef-elea-dark
+  ; ef-elea-dark ef-duo-dark
   (ef-themes-select 'ef-dream))
 
 (use-package
@@ -380,9 +380,11 @@
 
 (use-package
   scratchpads
-  :ensure nil
-  :straight nil
-  :load-path "~/code/emacs-scratchpads"
+  :straight
+  (scratchpads
+    :type git
+    :host github
+    :repo "SpyrosRoum/emacs-scratchpads")
   :bind
   (("C-c s n" . scratchpad-new)
     ("C-c s o" . scratchpad-open)
