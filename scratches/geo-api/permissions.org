@@ -1,0 +1,53 @@
+* Privilages
+** Base
+agrisynapsis_Stathmoi_R
+agrisynapsis_Satellite_R
+agrisynapsis_Producers_R
+agrisynapsis_Drones_R
+agrisynapsis_FlightPlans_R
+agrisynapsis_Operators_R
+agrisynapsis_Classifications_R
+
+** Unused
+agrisynapsis_Operators_W
+agrisynapsis_Operators_D
+agrisynapsis_FlightPlans_W
+agrisynapsis_FlightPlans_D
+agrisynapsis_Drones_W
+agrisynapsis_Drones_D
+agrisynapsis_Producers_W
+agrisynapsis_Producers_D
+agrisynapsis_Satellite_W
+agrisynapsis_Satellite_D
+agrisynapsis_Stathmoi_W
+agrisynapsis_Stathmoi_D
+
+* Client impl
+  STATIONS: "agrisynapsis_Stathmoi_R",
+  SATTELITE: "agrisynapsis_Satellite_R",
+  PARCELS: "agrisynapsis_Producers_R",
+  DRONES: "agrisynapsis_Drones_R",
+  FLIGHT_PLANS: "agrisynapsis_FlightPlans_R",
+  OPERATORS: "agrisynapsis_Operators_R ",
+  CLASSIFICATIONS: "agrisynapsis_Classifications_R",
+
+* Endpoints
+~/drones/*~ -> agrisynapsis_Drones_R
+~/centers/*~ -> agrisynapsis_Drones_R
+~/flights/*~ -> agrisynapsis_FlightPlans_R
+~/pilots/*~ -> agrisynapsis_Operators_R
+
+~/classification/*~ -> agrisynapsis_Classifications_R
+~/parcels/{id}/classifications/*~ -> agrisynapsis_Classifications_R
+~/parcels/*~ -> agrisynapsis_Producers_R
+~/v2/parcel-stats~ -> agrisynapsis_Producers_R
+~/image-product/*~ -> agrisynapsis_Satellite_R
+~/image/*~ -> agrisynapsis_Satellite_R
+~/layers~ -> agrisynapsis_Satellite_R
+~/layer/*~ -> agrisynapsis_Satellite_R
+~/geolayers~ -> agrisynapsis_Satellite_R
+~/hazards~ -> agrisynapsis_Satellite_R
+~/publishers/*~ -> agrisynapsis_Satellite_R
+~/filters~ -> agrisynapsis_Satellite_R
+~/products~ -> agrisynapsis_Satellite_R
+~/icm/*~ -> agrisynapsis_Producers_R
