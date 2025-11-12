@@ -140,7 +140,7 @@
 
 (defun spy/compilation-mode-set-scrolling ()
   "Set some scrolling related vars to prefered values for the *compilation* buffer"
-  (with-current-buffer "*compilation*"
+  (with-current-buffer (compilation-find-buffer)
     (setq-local
       compilation-scroll-output t
       scroll-margin 0)))
