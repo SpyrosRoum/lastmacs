@@ -198,6 +198,9 @@
 
 (use-package company-box :hook (company-mode . company-box-mode))
 
+(when (string= system-type "darwin")
+  (use-package ultra-scroll :config (ultra-scroll-mode 1)))
+
 (use-package vterm)
 (use-package
   vterm-toggle

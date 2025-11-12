@@ -90,7 +90,9 @@
 ;; `completion-at-point' is often bound to M-TAB.
 (setq tab-always-indent 'complete)
 
-(setq scroll-margin 5)
+(if (string-equal system-type "gnu/linux")
+  (setq scroll-margin 5)
+  (setq scroll-margin 0))
 (setq scroll-conservatively most-positive-fixnum)
 
 (defun my/clear-line ()
