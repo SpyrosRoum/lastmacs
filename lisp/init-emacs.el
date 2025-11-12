@@ -13,6 +13,9 @@
   '(font . "JetBrains Mono Nerd Font-14"))
 (set-face-attribute 'default t :font "JetBrains Mono Nerd Font-14")
 
+;; No beeps and boops on C-g etc when on emacs
+(setq ring-bell-function 'ignore)
+
 (setq dired-kill-when-opening-new-dired-buffer t)
 (setq dired-listing-switches "-alh")
 
