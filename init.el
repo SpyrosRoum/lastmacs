@@ -167,28 +167,38 @@
   ;; Use Consult to select xref locations with preview
   (setq
     xref-show-xrefs-function #'consult-xref
-    xref-show-definitions-function #'consult-xref))
+    xref-show-definitions-function #'consult-xref)
 
-(use-package
-  auto-virtualenvwrapper
-  :init
-  (add-hook 'python-base-mode-hook #'auto-virtualenvwrapper-activate
-    -10))
+  :custom (consult-preview-excluded-files '("\\.gpg\\'")))
 
 (use-package
   ruff-format
   :hook (python-base-mode . ruff-format-on-save-mode))
 
 (use-package
+  envrc
+  :custom
+  (envrc-remote 't)
+  (envrc-supported-tramp-methods '("ssh" "docker"))
+  :hook (after-init . envrc-global-mode))
+
+(use-package
   pet
   :config
   (add-hook 'python-base-mode-hook
     (lambda ()
-      (when-let*
-        ((ipython-executable (pet-executable-find "ipython")))
-        (setq-local python-shell-interpreter ipython-executable))
+      (setq-local
+        python-shell-interpreter (pet-executable-find "python")
+        python-shell-virtualenv-root (pet-virtualenv-root))
 
-      (pet-mode))
+      (pet-eglot-setup)
+
+      (setq-local
+        lsp-pyright-python-executable-cmd python-shell-interpreter
+        lsp-pyright-venv-path python-shell-virtualenv-root))
+
+    (when-let ((ruff-executable (pet-executable-find "ruff")))
+      (setq-local ruff-format-command ruff-executable))
     -5))
 
 (use-package
