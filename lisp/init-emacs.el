@@ -218,4 +218,10 @@
   (display-time-mode 1)
   (setopt tab-bar-show nil))
 
+(setq vterm-tramp-shells
+  '
+  (("ssh" login-shell)
+    ("scp" login-shell)
+    ("docker" "zsh" "/bin/sh")))
+
 (provide 'init-emacs)
