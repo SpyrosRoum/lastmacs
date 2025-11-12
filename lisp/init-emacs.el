@@ -148,6 +148,11 @@
 (add-hook 'compilation-mode-hook #'spy/compilation-mode-set-scrolling)
 (add-hook 'comint-mode-hook #'spy/compilation-mode-set-scrolling)
 
+(defun spy/fix-project ()
+  (load "project.elc")
+  (load "xref.elc"))
+
+(add-hook 'after-init-hook #'spy/fix-project)
 
 ;; Copied from magit-extras
 (defun magit-project-status ()
