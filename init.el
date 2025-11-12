@@ -31,6 +31,8 @@
   :commands (elisp-autofmt-mode elisp-autofmt-buffer)
   :hook (emacs-lisp-mode . elisp-autofmt-mode))
 
+(use-package nerd-icons)
+
 (use-package
   dashboard
   :config (dashboard-setup-startup-hook)
