@@ -25,7 +25,9 @@
 
 (use-package
   elisp-autofmt
-  :custom (elisp-autofmt-style 'fixed)
+  :custom
+  (elisp-autofmt-style 'fixed)
+  (elisp-autofmt-python-bin python-bin)
   :commands (elisp-autofmt-mode elisp-autofmt-buffer)
   :hook (emacs-lisp-mode . elisp-autofmt-mode))
 

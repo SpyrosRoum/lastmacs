@@ -16,6 +16,9 @@
 ;; No beeps and boops on C-g etc when on emacs
 (setq ring-bell-function 'ignore)
 
+(setq python-bin
+  (or (executable-find "python") (executable-find "python3")))
+
 (setq dired-kill-when-opening-new-dired-buffer t)
 (setq dired-listing-switches "-alh --group-directories-first")
 (when-let* ((uls-path (executable-find "uls")))
