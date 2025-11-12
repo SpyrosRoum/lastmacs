@@ -310,8 +310,6 @@
   (with-eval-after-load 'org
     (global-org-modern-mode)))
 
-(use-package dired-sidebar :commands (dired-sidebar-toggle-sidebar))
-
 (use-package
   nerd-icons-dired
   :hook (dired-mode . nerd-icons-dired-mode))
