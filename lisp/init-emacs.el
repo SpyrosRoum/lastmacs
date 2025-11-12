@@ -17,7 +17,9 @@
 (setq ring-bell-function 'ignore)
 
 (setq dired-kill-when-opening-new-dired-buffer t)
-(setq dired-listing-switches "-alh")
+(setq dired-listing-switches "-alh --group-directories-first")
+(when-let* ((uls-path (executable-find "uls")))
+  (setq insert-directory-program uls-path))
 
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
