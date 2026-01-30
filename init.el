@@ -182,7 +182,8 @@
   :custom
   (envrc-remote 't)
   (envrc-supported-tramp-methods '("ssh" "docker"))
-  :hook (after-init . envrc-global-mode))
+  :hook (after-init . envrc-mode)
+  :hook (change-major-mode-after-body . envrc-mode))
 
 (use-package
   pet
@@ -198,9 +199,6 @@
       (setq-local
         lsp-pyright-python-executable-cmd python-shell-interpreter
         lsp-pyright-venv-path python-shell-virtualenv-root))
-
-    (when-let ((ruff-executable (pet-executable-find "ruff")))
-      (setq-local ruff-format-command ruff-executable))
     -5))
 
 (use-package
