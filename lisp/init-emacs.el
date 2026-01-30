@@ -11,10 +11,14 @@
 (straight-use-package '(org :type git :depth 1))
 (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . tsx-ts-mode))
 
+(if (string-equal system-type "gnu/linux")
+  (setq spy/font-size 14)
+  (setq spy/font-size 20))
 (add-to-list
   'default-frame-alist
-  '(font . "JetBrains Mono Nerd Font-14"))
-(set-face-attribute 'default t :font "JetBrains Mono Nerd Font-14")
+  '(font . (format "JetBrainsMono Nerd Font-%d" spy/font-size)))
+;; (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font-20")
+(set-frame-font ("JetBrainsMono Nerd Font %d" spy/font-size) nil t)
 
 ;; No beeps and boops on C-g etc when on emacs
 (setq ring-bell-function 'ignore)
