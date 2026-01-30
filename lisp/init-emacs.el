@@ -9,6 +9,7 @@
 ;; This needs to be one of the first things to ensure there is no
 ;; version missmatch with org-roam
 (straight-use-package '(org :type git :depth 1))
+(add-to-list 'auto-mode-alist '("\\.tsx?\\'" . tsx-ts-mode))
 
 (add-to-list
   'default-frame-alist
