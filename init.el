@@ -322,12 +322,6 @@
   :config (org-roam-db-autosync-mode))
 
 (use-package
-  org-modern
-  :init
-  (with-eval-after-load 'org
-    (global-org-modern-mode)))
-
-(use-package
   nerd-icons-dired
   :hook (dired-mode . nerd-icons-dired-mode))
 

@@ -9,6 +9,8 @@
 ;; This needs to be one of the first things to ensure there is no
 ;; version missmatch with org-roam
 (straight-use-package '(org :type git :depth 1))
+(add-hook 'org-mode-hook #'org-indent-mode)
+
 (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . tsx-ts-mode))
 
 (if (string-equal system-type "gnu/linux")
