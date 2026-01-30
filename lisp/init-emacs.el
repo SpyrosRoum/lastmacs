@@ -18,9 +18,9 @@
   (setq spy/font-size 20))
 (add-to-list
   'default-frame-alist
-  '(font . (format "JetBrainsMono Nerd Font-%d" spy/font-size)))
+  `(font . ,(format "JetBrainsMono Nerd Font-%d" spy/font-size)))
 ;; (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font-20")
-(set-frame-font ("JetBrainsMono Nerd Font %d" spy/font-size) nil t)
+(set-frame-font (format "JetBrainsMono Nerd Font %d" spy/font-size) nil t)
 
 ;; No beeps and boops on C-g etc when on emacs
 (setq ring-bell-function 'ignore)
