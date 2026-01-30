@@ -137,8 +137,24 @@
         (windmove-down))
       (delete-window))))
 
-;; compilation-read-command uses `read-shell-command` by default, which doesn't use
-;; completion at all. So I overwrite it to use `completing-read` instead, which seems to work great.
+
+;; Get color support in compilation mode
+;; via built-in ansi-color.
+;; Check out https://codeberg.org/ideasman42/emacs-fancy-compilation maybe
+(use-package
+  ansi-color
+  :straight nil
+  :ensure nil
+  :hook (compilation-filter . ansi-color-compilation-filter))
+
+(with-eval-after-load 'comint
+  (add-hook
+    'comint-output-filter-functions
+    'comint-osc-process-output))
+
+;; compilation-read-command uses `read-shell-command` by default,
+;; which doesn't use completion at all. So I overwrite it to use
+;; `completing-read` instead, which seems to work great.
 (defun compilation-read-command-with-autocomplete (command)
   "Use `completing-read` to add autocomplete powers to compilation read"
   (completing-read "Compile command: " compile-history

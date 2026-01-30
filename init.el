@@ -337,15 +337,6 @@
 (use-package docker-compose-mode)
 (use-package docker :bind ("C-c d" . docker))
 
-;; Get color support in compilation mode
-;; via built-in ansi-color.
-;; Check out https://codeberg.org/ideasman42/emacs-fancy-compilation maybe
-(use-package
-  ansi-color
-  :straight nil
-  :ensure nil
-  :hook (compilation-filter . ansi-color-compilation-filter))
-
 (use-package
   exec-path-from-shell
   :init (exec-path-from-shell-initialize)
