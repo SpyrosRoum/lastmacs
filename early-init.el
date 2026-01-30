@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t; -*-
+
 ;; We use straight.el here, not package.el
 (setq package-enable-at-startup nil)
 
