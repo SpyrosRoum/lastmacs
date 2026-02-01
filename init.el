@@ -214,7 +214,7 @@
 (when (string= system-type "darwin")
   (use-package ultra-scroll :config (ultra-scroll-mode 1)))
 
-(use-package vterm)
+(use-package vterm :hook (vterm-mode . compilation-shell-minor-mode))
 (use-package
   vterm-toggle
   :custom
