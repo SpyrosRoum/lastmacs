@@ -258,7 +258,7 @@
   (otpp-mode 1)
   ;; If you want to advice the commands in `otpp-override-commands`
   ;; to be run in the current's tab (so, current project's) root directory
-  (otpp-override-mode 1))
+  (otpp-override-mode -1))
 
 ;; format: off
 (use-package ligature
