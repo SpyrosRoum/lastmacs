@@ -102,7 +102,7 @@
 
 (use-package
   consult
-  ;; Replace bindings. Lazily loaded due by `use-package'.
+  ;; Replace bindings. Lazily loaded by `use-package'.
   :bind
   ( ;; C-c bindings in `mode-specific-map'
     ("C-c M-x" . consult-mode-command)
@@ -158,20 +158,19 @@
   ;; Optionally configure the register formatting. This improves the register
   ;; preview for `consult-register', `consult-register-load',
   ;; `consult-register-store' and the Emacs built-ins.
-  (setq
-    register-preview-delay 0.5
-    register-preview-function #'consult-register-format)
+  (setq register-preview-function #'consult-register-format)
 
   ;; Optionally tweak the register preview window.
   ;; This adds thin lines, sorting and hides the mode line of the window.
   (advice-add #'register-preview :override #'consult-register-window)
 
+  :custom
+  (consult-preview-excluded-files '("\\.gpg\\'"))
+  (register-preview-delay 0.5)
   ;; Use Consult to select xref locations with preview
-  (setq
-    xref-show-xrefs-function #'consult-xref
-    xref-show-definitions-function #'consult-xref)
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref))
 
-  :custom (consult-preview-excluded-files '("\\.gpg\\'")))
 
 (use-package
   ruff-format
@@ -290,21 +289,6 @@
   (magit-display-buffer-function
     #'magit-display-buffer-fullframe-status-v1)
   (magit-format-file-function #'magit-format-file-nerd-icons))
-
-;; (use-package
-;;   solaire-mode
-;;   :init
-;;   (defun my/solaire-real-buffer-p ()
-;;     (cond
-;;       ((string= (buffer-name (buffer-base-buffer)) "*dashboard*")
-;;         t)
-;;       ((solaire-mode-real-buffer-p)
-;;         t)
-;;       (t
-;;         nil)))
-
-;;   (setq solaire-mode-real-buffer-fn 'my/solaire-real-buffer-p)
-;;   (solaire-global-mode +1))
 
 ;; Detected by eglot so that it prints pretty docs w/ eldoc 
 (use-package markdown-mode :mode ("README\\.md\\'" . gfm-mode))
