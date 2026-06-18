@@ -9,9 +9,11 @@
     '
     (avy
       breadcrumb
+      cape
       cider
       clojure-ts-mode
       company-box
+      corfu
       dashboard
       docker
       docker-compose-mode
@@ -31,6 +33,7 @@
       helpful
       hl-todo
       just-ts-mode
+      kind-icon
       ligature
       magit
       marginalia
@@ -45,6 +48,7 @@
       rust-mode
       scratchpads
       smartparens
+      symbol-overlay
       terraform-mode
       ultra-scroll
       undo-fu

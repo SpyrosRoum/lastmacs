@@ -205,16 +205,56 @@
   :hook (change-major-mode-after-body . envrc-mode))
 
 (use-package
-  company-mode
-  :ensure company
-  :bind (:map company-active-map ("C-y" . company-complete-selection))
-  :custom (company-selection-wrap-around t)
-  :init
-  (setq company-tooltip-align-annotations t)
-  (setq company-tooltip-flip-when-above t)
-  (global-company-mode))
+  corfu
+  ;; Optional customizations
+  :custom
+  (corfu-cycle t) ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
+  (corfu-on-exact-match 'insert) ;; Configure handling of exact matches
 
-(use-package company-box :hook (company-mode . company-box-mode))
+  :bind
+  (:map
+    corfu-map
+    ("SPC" . corfu-insert-separator)
+    ("C-n" . corfu-next)
+    ("C-p" . corfu-previous))
+
+  :init (global-corfu-mode)
+  ;; Enable optional extension modes:
+  ;; (corfu-history-mode)
+  (corfu-popupinfo-mode))
+
+;; Part of corfu
+(use-package
+  corfu-popupinfo
+  :after corfu
+  :ensure nil
+  :hook (corfu-mode . corfu-popupinfo-mode)
+  :custom
+  (corfu-popupinfo-delay '(0.25 . 0.1))
+  (corfu-popupinfo-hide nil)
+  :config (corfu-popupinfo-mode))
+
+;; Pretty icons for corfu
+(use-package
+  kind-icon
+  :if (display-graphic-p)
+  :after corfu
+  :config (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
+;; Fancy completion-at-point functions
+(use-package
+  cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-dict)
+  (add-to-list 'completion-at-point-functions #'cape-emoji)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
 (when (string= system-type "darwin")
   (use-package ultra-scroll :config (ultra-scroll-mode 1)))

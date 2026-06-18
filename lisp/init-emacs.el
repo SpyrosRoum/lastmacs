@@ -97,6 +97,10 @@
 ;; `completion-at-point' is often bound to M-TAB.
 (setq tab-always-indent 'complete)
 
+;; Emacs 30 and newer: Disable Ispell completion function.
+;; Try `cape-dict' as an alternative.
+(setopt text-mode-ispell-word-completion nil)
+
 (if (string-equal system-type "gnu/linux")
   (setq scroll-margin 5)
   (setq scroll-margin 0))
