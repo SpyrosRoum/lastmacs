@@ -16,7 +16,7 @@
   ef-themes
   :config (setq ef-themes-to-toggle '(ef-dream ef-frost))
   ; ef-elea-dark ef-duo-dark
-  (ef-themes-select 'ef-dream))
+  (modus-themes-select 'ef-dream))
 
 (use-package
   doom-modeline
