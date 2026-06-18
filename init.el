@@ -185,22 +185,6 @@
   :hook (change-major-mode-after-body . envrc-mode))
 
 (use-package
-  pet
-  :config
-  (add-hook 'python-base-mode-hook
-    (lambda ()
-      (setq-local
-        python-shell-interpreter (pet-executable-find "python")
-        python-shell-virtualenv-root (pet-virtualenv-root))
-
-      (pet-eglot-setup)
-
-      (setq-local
-        lsp-pyright-python-executable-cmd python-shell-interpreter
-        lsp-pyright-venv-path python-shell-virtualenv-root))
-    -5))
-
-(use-package
   company-mode
   :bind (:map company-active-map ("C-y" . company-complete-selection))
   :custom (company-selection-wrap-around t)
