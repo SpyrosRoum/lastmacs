@@ -9,6 +9,7 @@
   (setq evil-undo-system 'undo-fu)
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
+  (defvar evil-mode-buffers '())	; Bug as of 2026-01-12; see https://github.com/emacs-evil/evil/issues/1983
 
   (evil-mode 1)
   :config (evil-set-initial-state 'comint-mode 'normal))
