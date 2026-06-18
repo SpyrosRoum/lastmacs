@@ -249,4 +249,12 @@
     ("scp" login-shell)
     ("docker" "zsh" "/bin/sh")))
 
+(with-eval-after-load 'tramp
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  (add-to-list
+    'tramp-remote-path
+    "/opt/wf-devcontainer-tools/installers"
+    ;; Append it to the end of the list
+    't))
+
 (provide 'init-emacs)
