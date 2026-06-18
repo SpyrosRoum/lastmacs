@@ -4,11 +4,31 @@
   'load-path
   (expand-file-name "lisp" user-emacs-directory))
 
-(require 'init-emacs)
-(require 'init-evil)
+(setq gc-cons-threshold (or spy--initial-gc-threshold 800000))
+
+;; Define custom file
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (and custom-file (file-exists-p custom-file))
+  (load custom-file nil :nomessage))
+
+;; Bootstrap package.el + use-package (we no longer use straight.el)
+(require 'package)
+(add-to-list
+  'package-archives
+  '("melpa" . "https://melpa.org/packages/")
+  t)
+(package-initialize)
+;; First run: fetch archive contents so `use-package-always-ensure' can install
+(unless package-archive-contents
+  (package-refresh-contents))
+(require 'use-package)
+
+(use-package gcmh :init (gcmh-mode 1))
 
 (use-package no-littering :init (no-littering-theme-backups))
-(use-package gcmh :init (gcmh-mode 1))
+
+(require 'init-emacs)
+(require 'init-evil)
 
 (use-package avy)
 
@@ -186,6 +206,7 @@
 
 (use-package
   company-mode
+  :ensure company
   :bind (:map company-active-map ("C-y" . company-complete-selection))
   :custom (company-selection-wrap-around t)
   :init
@@ -201,6 +222,7 @@
 (use-package vterm :hook (vterm-mode . compilation-shell-minor-mode))
 (use-package
   vterm-toggle
+  :after vterm
   :custom
   (vterm-toggle-scope 'project)
   (vterm-toggle-use-dedicated-buffer t)
@@ -232,7 +254,6 @@
 
 (use-package
   otpp
-  :straight t
   :after project
   :init
   ;; If you like to define some aliases for better user experience
@@ -349,11 +370,12 @@
 
 (use-package
   scratchpads
-  :straight
-  (scratchpads
-    :type git
-    :host github
-    :repo "SpyrosRoum/emacs-scratchpads")
+  :vc
+  (:url
+    "https://github.com/SpyrosRoum/emacs-scratchpads"
+    :rev
+    :newest
+    :branch "master")
   :bind
   (("C-c s n" . scratchpad-new)
     ("C-c s o" . scratchpad-open)
@@ -362,7 +384,6 @@
 (use-package
   emacs-solo-dired-gutter
   :ensure nil
-  :straight nil
   :no-require t
   :defer t
   :init (setq emacs-solo-dired-gutter-enabled t)

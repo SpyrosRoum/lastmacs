@@ -1,14 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (and custom-file (file-exists-p custom-file))
-  (load custom-file nil :nomessage))
-
-(setq straight-use-package-by-default t)
-
 ;; This needs to be one of the first things to ensure there is no
 ;; version missmatch with org-roam
-(straight-use-package '(org :type git :depth 1))
+(use-package org)
 (add-hook 'org-mode-hook #'org-indent-mode)
 
 (add-to-list 'auto-mode-alist '("\\.tsx?\\'" . tsx-ts-mode))
@@ -20,7 +14,9 @@
   'default-frame-alist
   `(font . ,(format "JetBrainsMono Nerd Font-%d" spy/font-size)))
 ;; (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font-20")
-(set-frame-font (format "JetBrainsMono Nerd Font %d" spy/font-size) nil t)
+(set-frame-font (format "JetBrainsMono Nerd Font %d" spy/font-size)
+  nil
+  t)
 
 ;; No beeps and boops on C-g etc when on emacs
 (setq ring-bell-function 'ignore)
@@ -34,9 +30,8 @@
   (setq insert-directory-program uls-path))
 
 (menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
 (blink-cursor-mode -1)
+(toggle-truncate-lines +1)
 
 (winner-mode 1)
 (global-subword-mode 1)
@@ -149,7 +144,6 @@
 ;; Check out https://codeberg.org/ideasman42/emacs-fancy-compilation maybe
 (use-package
   ansi-color
-  :straight nil
   :ensure nil
   :hook (compilation-filter . ansi-color-compilation-filter))
 
@@ -197,13 +191,15 @@
 
 (use-package
   project
-  :straight nil
+  :ensure nil
   :custom
   (project-switch-commands
     '
     ((project-find-file "Find file")
       (consult-ripgrep "Find regex" "g")
-      (magit-project-status "Magit" "v"))))
+      (magit-project-status "Magit" "v")))
+  ;; Allows me to add sub-directories as projects or projects without VC
+  (project-vc-extra-root-markers '("package.json" ".github")))
 
 (defun wsl-copy (start end)
   (interactive "r")
@@ -241,11 +237,11 @@
   (display-battery-mode 1)
   (setopt display-time-24hr-format t)
   (display-time-mode 1)
-  (setopt tab-bar-show nil))
+  (setopt tab-bar-show 1))
 
 (setq vterm-tramp-shells
   '
-  (("ssh" login-shell)
+  (("ssh" "zsh" login-shell)
     ("scp" login-shell)
     ("docker" "zsh" "/bin/sh")))
 
