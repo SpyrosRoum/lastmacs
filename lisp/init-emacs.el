@@ -205,14 +205,6 @@
   ;; Allows me to add sub-directories as projects or projects without VC
   (project-vc-extra-root-markers '("package.json" ".github")))
 
-(defun wsl-copy (start end)
-  (interactive "r")
-  (shell-command-on-region start end "clip.exe")
-  (deactivate-mark))
-
-;; (when (string-match ".*-WSL2" operating-system-release)
-;;   (global-set-key (kbd "C-c C-c") 'wsl-copy))
-
 ;; Configure ispell to use hunspell with Greek and English dicts
 (with-eval-after-load 'ispell
   (setq ispell-program-name "hunspell")
@@ -231,6 +223,41 @@
     (write-region "" nil ispell-personal-dictionary nil 0)))
 ;; /ispell
 
+;; Automatically reread from disk if the underlying file changes by
+;; using the OS file change notification interface rather than
+;; repeatedly polling to see if there are changes.
+;;
+;; Some systems don't do file notifications well; see
+;; https://todo.sr.ht/~ashton314/emacs-bedrock/11
+;; Set this to `nil' if Emacs is having trouble picking up changes.
+(setopt auto-revert-avoid-polling t)
+(setopt auto-revert-interval 5)
+(setopt auto-revert-check-vc-info t)
+(global-auto-revert-mode)
+
+;; Make right-click do something sensible and shift-drag behave better
+(when (display-graphic-p)
+  (mouse-shift-adjust-mode)
+  (context-menu-mode))
+
+;; Emacs works really hard to be incredibly compatible out-of-the-box
+;; with a wide variety of languages. That comes at the cost of a
+;; little performance. These tell Emacs to assume left-to-right text
+;; in all buffers.
+;; Remove/comment if you read right-to-left languages (Arabic, Hebrew, etc.)
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq bidi-inhibit-bpa t)
+
+;; Enable horizontal scrolling
+(setopt mouse-wheel-tilt-scroll t)
+(setopt mouse-wheel-flip-direction t)
+
+;; Add the time to the tab-bar, if visible
+(add-to-list 'tab-bar-format 'tab-bar-format-align-right 'append)
+(add-to-list 'tab-bar-format 'tab-bar-format-global 'append)
+(setopt display-time-format "%a %F %T")
+(setopt display-time-interval 1)
+(display-time-mode)
 
 (keymap-global-set "C-c c" #'compile)
 
