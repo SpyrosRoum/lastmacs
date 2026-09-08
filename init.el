@@ -201,7 +201,7 @@
   envrc
   :custom
   (envrc-remote 't)
-  (envrc-supported-tramp-methods '("ssh" "docker"))
+  (envrc-supported-tramp-methods '("ssh" "docker" "dockercp"))
   :hook (after-init . envrc-mode)
   :hook (change-major-mode-after-body . envrc-mode))
 
@@ -227,7 +227,7 @@
   :custom
   (corfu-cycle t) ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  (corfu-quit-at-boundary t) ;; Always quit at completion boundary
   ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
   ;; (corfu-preview-current nil)    ;; Disable current candidate preview
   ;; (corfu-preselect 'prompt)      ;; Preselect the prompt
@@ -372,10 +372,7 @@
   (defalias 'one-tab-per-project-mode 'otpp-mode)
   (defalias 'one-tab-per-project-override-mode 'otpp-override-mode)
   ;; Enable `otpp-mode` globally
-  (otpp-mode 1)
-  ;; If you want to advice the commands in `otpp-override-commands`
-  ;; to be run in the current's tab (so, current project's) root directory
-  (otpp-override-mode -1))
+  (otpp-mode 1))
 
 ;; format: off
 (use-package ligature
@@ -415,7 +412,8 @@
   :hook (rust-mode . eglot-ensure)
   :init
   (setq rust-mode-treesitter-derive t)
-  (setq rust-format-on-save t))
+  (setq rust-format-on-save t)
+  (setq rust-rustfmt-switches '("--edition" "2024")))
 
 (use-package
   org-roam

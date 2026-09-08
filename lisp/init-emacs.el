@@ -261,6 +261,11 @@
 
 (keymap-global-set "C-c c" #'compile)
 
+;; If you are in a window that is dedicated to its buffer and try to
+;; `switch-to-buffer' there, tell Emacs to pop a new window instead of
+;; using the current one:
+(setq switch-to-buffer-in-dedicated-window 'pop)
+
 ;; Save some space on the laptop by always hidding the tab-bar
 ;; and adding a clock in the mode line to make it easier
 ;; running full-screen emacs
