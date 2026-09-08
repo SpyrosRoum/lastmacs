@@ -47,7 +47,6 @@
   (mode
     '
     (term-mode-hook
-      vterm-mode-hook
       shell-mode-hook
       eshell-mode-hook
       dired-mode-hook
@@ -57,7 +56,8 @@
       pdf-view-mode-hook
       image-mode-hook
       cider-repl-mode-hook
-      cider-stacktrace-mode-hook))
+      cider-stacktrace-mode-hook
+      ghostel-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; Configure backups to all be in one place.
@@ -269,12 +269,6 @@
   (setopt display-time-24hr-format t)
   (display-time-mode 1)
   (setopt tab-bar-show 1))
-
-(setq vterm-tramp-shells
-  '
-  (("ssh" "zsh" login-shell)
-    ("scp" login-shell)
-    ("docker" "zsh" "/bin/sh")))
 
 (with-eval-after-load 'tramp
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)

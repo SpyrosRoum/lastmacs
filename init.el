@@ -28,6 +28,7 @@
 (use-package no-littering :init (no-littering-theme-backups))
 
 (require 'init-emacs)
+(require 'toggler)
 (require 'init-evil)
 
 (use-package avy)
@@ -259,38 +260,93 @@
 (when (string= system-type "darwin")
   (use-package ultra-scroll :config (ultra-scroll-mode 1)))
 
-(use-package vterm :hook (vterm-mode . compilation-shell-minor-mode))
 (use-package
-  vterm-toggle
-  :after vterm
+  ghostel
+  ;; :bind (:map project-prefix-map ("c" . ghostel-compile))
   :custom
-  (vterm-toggle-scope 'project)
-  (vterm-toggle-use-dedicated-buffer t)
-  (vterm-toggle-hide-method 'delete-window)
-  (vterm-toggle-fullscreen-p nil)
-
-  :init
-  ;; Show it to the bottom
-  ;; Coppied from vterm-toggle README's,
-  ;; I can maybe make it simpler using prot's video?
-  (add-to-list
-    'display-buffer-alist
+  (ghostel-tramp-shells
     '
+    (("ssh" "zsh" login-shell)
+      ("scp" login-shell)
+      ("docker" "zsh" "/bin/sh")
+      ("dockercp" "zsh" "/bin/sh")
+      ("rpcdocker" "zsh" "/bin/sh")))
+
+  ;; `envrc-mode' injects direnv's bookkeeping vars (DIRENV_DIFF, ...)
+  ;; into the buffer-local `process-environment'.  Ghostel spawns its
+  ;; shell from that environment, so the shell's own direnv hook sees
+  ;; a stale DIRENV_DIFF and fails to Revert() it: direnv: error
+  ;; Revert() failed: unmarshal() base64 decoding: illegal base64 data
+  ;; at input byte 600
+
+  ;; By naming me in ghostel-environment we effectively `unset` them
+  ;; so it's fine.
+  (ghostel-environment
+    '
+    ("DIRENV_DIFF"
+      "DIRENV_WATCHES"
+      "DIRENV_DIR"
+      "DIRENV_FILE"
+      "DIRENV_DEFAULT_CONFIG"))
+  :config
+  (let*
     (
-      (lambda (buffer-or-name _)
-        (let ((buffer (get-buffer buffer-or-name)))
-          (with-current-buffer buffer
-            (or (equal major-mode 'vterm-mode)
-              (string-prefix-p
-                vterm-buffer-name
-                (buffer-name buffer))))))
-      (display-buffer-reuse-window display-buffer-at-bottom)
-      ;;(display-buffer-reuse-window display-buffer-in-direction)
-      ;;display-buffer-in-direction/direction/dedicated is added in emacs27
-      ;;(direction . bottom)
-      ;;(dedicated . t) ;dedicated is supported in emacs27
-      (reusable-frames . visible)
-      (window-height . 0.3))))
+      (elems
+        '
+        (
+          ;; Put ghostel in bottom
+          (
+            (lambda (buffer-or-name _)
+              (let*
+                (
+                  (buffer (get-buffer buffer-or-name))
+                  (name (buffer-name buffer)))
+                (with-current-buffer buffer
+                  (and (equal major-mode 'ghostel-mode)
+                    (not (string-prefix-p "Claude-" name))))))
+            (display-buffer-reuse-window display-buffer-at-bottom)
+            (direction . bottom)
+            (reusable-frames . visible)
+            (window-height . 0.3))
+          ;; Put claude (spawned with ghostel-project-claude) to the right
+          (
+            (lambda (buffer-or-name _)
+              (let*
+                (
+                  (buffer (get-buffer buffer-or-name))
+                  (name (buffer-name buffer)))
+                (with-current-buffer buffer
+                  ;; fundamental mode because ghostel hasn't taken
+                  ;; over yet when this runs
+                  (and
+                    (or (equal major-mode 'fundamental-mode)
+                      (equal major-mode 'ghostel-mode))
+                    (string-match-p ".*Claude Code.*" name)))))
+            (display-buffer-reuse-window display-buffer-in-direction)
+            (direction . rightmost)
+            (reusable-frames . visible)
+            (window-width . 0.5)))))
+    (dolist (elem elems)
+      (add-to-list 'display-buffer-alist elem))))
+
+(use-package
+  evil-ghostel
+  :after (ghostel evil)
+  :hook (ghostel-mode . evil-ghostel-mode))
+
+(defun ghostel-project-claude ()
+  "Spawn a new claude session inside ghostel"
+  (interactive)
+  (let*
+    (
+      ;; ghostel starts the terminal in `default-directory',
+      ;; so naming here is important
+      (default-directory (project-root (project-current)))
+      (buffer-name (format "Claude-%s" default-directory))
+      (b (get-buffer-create buffer-name)))
+    (pop-to-buffer b)
+    (ghostel-exec b "claude")
+    b))
 
 (use-package
   otpp

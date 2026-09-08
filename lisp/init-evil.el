@@ -26,6 +26,9 @@
   (evil-goggles-mode)
   (evil-goggles-use-diff-faces))
 
+(toggler-create-toggle "ghostel" #'ghostel-project 't)
+(toggler-create-toggle "ghostel-claude" #'ghostel-project-claude 't)
+
 ;; format: off
 (use-package
   general
@@ -67,7 +70,8 @@
     "bd" 'kill-current-buffer
 
     "o" (cons "Open" (make-sparse-keymap))
-    "ot" '("Toggle terminal" . vterm-toggle)
+    "ot" '("Toggle terminal" . toggle-ghostel)
+    "oc" '("Toggle Claude" . toggle-ghostel-claude)
 
     "s" (cons "Search" (make-sparse-keymap))
     "sp" '("Search Project" . consult-ripgrep)
