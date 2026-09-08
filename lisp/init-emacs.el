@@ -71,6 +71,26 @@
   version-control t)
 ;; -- /backups --
 
+;; -- Speeding up tramp --
+(setq vc-handled-backends '(Git))
+(setq auto-revert-remote-files nil)
+(setq tramp-verbose 2)
+;; The rest are taken from https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
+(setq
+  remote-file-name-inhibit-locks t
+  tramp-use-scp-direct-remote-copying t
+  remote-file-name-inhibit-auto-save-visited t)
+;; 1MB
+(setq tramp-copy-size-limit (* 1024 1024))
+;; -- /speeding up tramp --
+
+(use-package
+  eglot
+  :ensure nil
+  :custom (eglot-extend-to-xref t) ;; activate eglot in referenced non-project files 
+  :config (fset #'jsonrpc--log-event #'ignore) ;; perf boost: don't log every event
+  (add-to-list 'eglot-server-programs '(elixir-ts-mode "elixir-ls")))
+
 ;; Prefer treesitter for some modes
 (setq major-mode-remap-alist
   '((python-mode . python-ts-mode) (c-mode . c-ts-mode)))
@@ -203,7 +223,18 @@
       (consult-ripgrep "Find regex" "g")
       (magit-project-status "Magit" "v")))
   ;; Allows me to add sub-directories as projects or projects without VC
-  (project-vc-extra-root-markers '("package.json" ".github")))
+  (project-vc-extra-root-markers '(".github/"))
+  ;; `project-try-vc''s result is cached per directory, but both of these
+  ;; default to a nil (= never expire) timeout for remote/tramp dirs. If
+  ;; the very first check on a remote dir happens while `non-essential' is
+  ;; set (e.g. some background/mode-line call to `project-current' with a
+  ;; nil MAYBE-PROMPT, before any connection is open), Tramp refuses to
+  ;; open a new connection, the .git check comes back empty, and that
+  ;; "not a project" answer then sticks for the rest of the session even
+  ;; after the connection is up and .git is reachable. Give remote dirs a
+  ;; real, short timeout so a bad negative can self-heal.
+  (project-vc-cache-timeout '((always . 5)))
+  (project-vc-non-essential-cache-timeout '((always . 30))))
 
 ;; Configure ispell to use hunspell with Greek and English dicts
 (with-eval-after-load 'ispell
@@ -232,7 +263,10 @@
 ;; Set this to `nil' if Emacs is having trouble picking up changes.
 (setopt auto-revert-avoid-polling t)
 (setopt auto-revert-interval 5)
-(setopt auto-revert-check-vc-info t)
+;; Disabled: with global-auto-revert-mode this makes the 5s timer call
+;; vc-refresh-state on remote /docker: buffers, racing TRAMP's single shell
+;; channel and corrupting reads (wrong-type-argument listp \240\252...).
+;; (setopt auto-revert-check-vc-info t)
 (global-auto-revert-mode)
 
 ;; Make right-click do something sensible and shift-drag behave better
