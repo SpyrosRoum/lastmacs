@@ -422,6 +422,17 @@
     ("C-c s d" . scratchpad-delete)))
 
 (use-package
+  ledger-mode
+  :custom
+  (ledger-binary-path "hledger")
+  (ledger-mode-should-check-version nil)
+  (ledger-report-auto-width nil)
+  (ledger-report-links-in-register nil)
+  (ledger-report-native-highlighting-arguments '("--color=always"))
+  (ledger-default-date-string "%Y-%m-%d")
+  :mode ("\\.hledger\\'" "\\.ledger\\'"))
+
+(use-package
   emacs-solo-dired-gutter
   :ensure nil
   :no-require t
