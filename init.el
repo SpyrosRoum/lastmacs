@@ -206,6 +206,22 @@
   :hook (change-major-mode-after-body . envrc-mode))
 
 (use-package
+  completion-preview-mode
+  :ensure nil
+  :hook (after-init . global-completion-preview-mode)
+  :config
+  (with-eval-after-load 'org
+    ;; Add Org mode's custom 'self-insert-command' to completion-previews
+    (push 'org-self-insert-command completion-preview-commands))
+  ;; Disable completion preview in Org tables (Emacs 31+)
+  (defun my/detect-org-table ()
+    "Return true if point in Org table."
+    (and (derived-mode-p 'org-mode) (org-at-table-p)))
+  (add-hook
+    'completion-preview-inhibit-functions
+    #'my/detect-org-table))
+
+(use-package
   corfu
   ;; Optional customizations
   :custom
