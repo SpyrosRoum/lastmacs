@@ -37,7 +37,14 @@
 
 (use-package
   ef-themes
-  :config (setq ef-themes-to-toggle '(ef-dream ef-frost))
+  :init
+  ;; This makes the Modus commands listed below consider only the Ef
+  ;; themes.
+  (ef-themes-take-over-modus-themes-mode 1)
+  :config
+  (setq ef-themes-to-toggle '(ef-dream ef-frost))
+  (setq modus-themes-mixed-fonts t)
+  (setq modus-themes-italic-constructs t)
   ; ef-elea-dark ef-duo-dark
   (modus-themes-select 'ef-dream))
 
