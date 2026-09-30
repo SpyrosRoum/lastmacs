@@ -469,7 +469,7 @@
 ;; Center buffer
 (use-package olivetti)
 
-(use-package just-ts-mode)
+(use-package just-ts-mode :custom (just-ts-indent-offset 2))
 
 (use-package
   symbol-overlay
