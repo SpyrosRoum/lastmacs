@@ -67,6 +67,7 @@
 
 (use-package
   dashboard
+  :if spy/full-config
   :config (dashboard-setup-startup-hook)
   :custom
   (dashboard-banner-logo-title
@@ -418,6 +419,7 @@
 
 (use-package
   rust-mode
+  :if spy/full-config
   :hook (rust-mode . eglot-ensure)
   :init
   (setq rust-mode-treesitter-derive t)
@@ -426,6 +428,7 @@
 
 (use-package
   org-roam
+  :if spy/full-config
   :custom (org-roam-directory (file-truename "~/Documents/roam"))
   :config (org-roam-db-autosync-mode))
 
@@ -456,14 +459,16 @@
 
 (use-package git-gutter :init (global-git-gutter-mode +1))
 
-(use-package lua-mode)
-
 ;; clojure-mode is still needed for some cider things,
 ;; but clojure-ts-mode is mainly at use
-(use-package clojure-mode)
-(use-package clojure-ts-mode :hook (clojure-ts-mode . cider-mode))
+(use-package :if spy/full-config clojure-mode)
+(use-package
+  :if
+  spy/full-config
+  clojure-ts-mode
+  :hook (clojure-ts-mode . cider-mode))
 
-(use-package cider)
+(use-package :if spy/full-config cider)
 
 (use-package embark :bind (("C-c ." . embark-act)))
 
@@ -502,6 +507,7 @@
 
 (use-package
   ledger-mode
+  :if spy/full-config
   :custom
   (ledger-binary-path "hledger")
   (ledger-mode-should-check-version nil)
