@@ -19,7 +19,7 @@
 (setq frame-resize-pixelwise t)
 ; (setq window-resize-pixelwise t)
 
-(when (boundp 'tool-bar-mode) ; When in a GUI, disable tool bar;
+(when (functionp 'tool-bar-mode) ; When in a GUI, disable tool bar;
   (tool-bar-mode -1)) ; all these tools are in the menu-bar anyway
 
 (setq default-frame-alist
