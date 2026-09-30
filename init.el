@@ -23,6 +23,8 @@
   (package-refresh-contents))
 (require 'use-package)
 
+(setq spy/full-config (not (getenv "EMACS_MINIMAL_CONFIG")))
+
 (use-package gcmh :init (gcmh-mode 1))
 
 (use-package no-littering :init (no-littering-theme-backups))
