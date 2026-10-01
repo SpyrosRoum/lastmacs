@@ -460,14 +460,13 @@
 
 ;; clojure-mode is still needed for some cider things,
 ;; but clojure-ts-mode is mainly at use
-(use-package :if spy/full-config clojure-mode)
+(use-package clojure-mode :if spy/full-config)
 (use-package
-  :if
-  spy/full-config
   clojure-ts-mode
+  :if spy/full-config
   :hook (clojure-ts-mode . cider-mode))
 
-(use-package :if spy/full-config cider)
+(use-package cider :if spy/full-config)
 
 (use-package embark :bind (("C-c ." . embark-act)))
 
