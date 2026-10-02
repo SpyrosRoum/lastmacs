@@ -96,9 +96,8 @@
 (setq major-mode-remap-alist
   '((python-mode . python-ts-mode) (c-mode . c-ts-mode)))
 
-;; Use the dashboard as initial buffer
-(setq initial-buffer-choice
-  (lambda () (get-buffer-create dashboard-buffer-name)))
+;; Use scratch buffer as default
+(setq initial-buffer-choice t)
 
 ;; Support opening new minibuffers from inside existing minibuffers.
 (setq enable-recursive-minibuffers t)

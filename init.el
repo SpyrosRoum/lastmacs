@@ -67,8 +67,10 @@
 
 (use-package
   dashboard
-  :if spy/full-config
-  :config (dashboard-setup-startup-hook)
+  :config
+  (setq initial-buffer-choice
+    (lambda () (get-buffer-create dashboard-buffer-name)))
+  (dashboard-setup-startup-hook)
   :custom
   (dashboard-banner-logo-title
     "010010000110010101101100011011000110111100001010") ;; "Hello"
