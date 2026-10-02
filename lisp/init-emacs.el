@@ -84,7 +84,6 @@
 (setq tramp-copy-size-limit (* 1024 1024))
 ;; -- /speeding up tramp --
 
-(use-package xterm :ensure nil)
 (use-package
   eglot
   :ensure nil
