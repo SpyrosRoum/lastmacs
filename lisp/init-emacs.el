@@ -273,6 +273,20 @@
   (mouse-shift-adjust-mode)
   (context-menu-mode))
 
+;; Force use OSC-52 for copying things to system clipboard.
+;; This is actually needed only when inside tmux, otherwise xterm.el works fairly well.
+;; Note that `set -s set-clipboard on' needs to be set in tmux as well.
+(when (getenv "TMUX")
+  (defun osc52-select-text (text)
+    (let
+      (
+        (base64-text
+          (base64-encode-string (encode-coding-string text 'utf-8)
+            t)))
+      (send-string-to-terminal (format "\e]52;c;%s\a" base64-text))))
+
+  (setq interprogram-cut-function 'osc52-select-text))
+
 ;; Emacs works really hard to be incredibly compatible out-of-the-box
 ;; with a wide variety of languages. That comes at the cost of a
 ;; little performance. These tell Emacs to assume left-to-right text
