@@ -5,18 +5,19 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(avy beancount breadcrumb cape cider clojure-ts-mode company-box
-	 corfu dashboard docker docker-compose-mode dockerfile-mode
-	 doom-modeline eca ef-themes eglot elisp-autofmt
-	 embark-consult envrc evil-collection evil-ghostel
-	 evil-goggles exec-path-from-shell gcmh general ghostel
-	 git-gutter helpful hl-todo just-ts-mode kind-icon
-	 kotlin-ts-mode kotlint-ts-mode ledger-mode ligature magit
-	 marginalia msgpack nerd-icons-completion nerd-icons-dired
-	 no-littering olivetti orderless org-roam otpp popper
-	 ruff-format rust-mode scratchpads smartparens svelte-ts-mode
-	 symbol-overlay terraform-mode tramp-hlo ultra-scroll undo-fu
-	 verb vertico vterm-toggle vundo web-mode wgrep))
+   '(avy beancount breadcrumb cape cider clojure-mode clojure-ts-mode
+	 company-box consult corfu dashboard docker
+	 docker-compose-mode dockerfile-mode doom-modeline eca
+	 ef-themes eglot elisp-autofmt embark embark-consult envrc
+	 evil-collection evil-ghostel evil-goggles
+	 exec-path-from-shell gcmh general ghostel git-gutter helpful
+	 hl-todo just-ts-mode kind-icon kotlin-ts-mode kotlint-ts-mode
+	 ledger-mode ligature magit marginalia markdown-mode msgpack
+	 nerd-icons-completion nerd-icons-dired no-littering olivetti
+	 orderless org-roam otpp popper ruff-format rust-mode
+	 scratchpads smartparens svelte-ts-mode symbol-overlay
+	 terraform-mode tramp-hlo ultra-scroll undo-fu verb vertico
+	 vterm-toggle vundo web-mode wgrep))
  '(package-vc-selected-packages
    '((svelte-ts-mode :url "https://github.com/leafOfTree/svelte-ts-mode"
 		     :branch "main")
