@@ -299,28 +299,12 @@
 (setopt mouse-wheel-tilt-scroll t)
 (setopt mouse-wheel-flip-direction t)
 
-;; Add the time to the tab-bar, if visible
-(add-to-list 'tab-bar-format 'tab-bar-format-align-right 'append)
-(add-to-list 'tab-bar-format 'tab-bar-format-global 'append)
-(setopt display-time-format "%a %F %T")
-(setopt display-time-interval 1)
-(display-time-mode)
-
 (keymap-global-set "C-c c" #'compile)
 
 ;; If you are in a window that is dedicated to its buffer and try to
 ;; `switch-to-buffer' there, tell Emacs to pop a new window instead of
 ;; using the current one:
 (setq switch-to-buffer-in-dedicated-window 'pop)
-
-;; Save some space on the laptop by always hidding the tab-bar
-;; and adding a clock in the mode line to make it easier
-;; running full-screen emacs
-(when (string= (system-name) "conquest")
-  (display-battery-mode 1)
-  (setopt display-time-24hr-format t)
-  (display-time-mode 1)
-  (setopt tab-bar-show 1))
 
 (with-eval-after-load 'tramp
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
