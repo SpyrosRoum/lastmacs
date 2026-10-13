@@ -24,6 +24,9 @@
      (scratchpads :url
 		  "https://github.com/SpyrosRoum/emacs-scratchpads"
 		  :branch "master")))
+ '(safe-local-variable-values
+   '((ledger-master-file . "./main.hledger")
+     (ledger-master-file . "../main.hledger")))
  '(switch-to-buffer-in-dedicated-window 'pop))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
