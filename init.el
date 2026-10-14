@@ -429,12 +429,6 @@
   (setq rust-rustfmt-switches '("--edition" "2024")))
 
 (use-package
-  org-roam
-  :if spy/full-config
-  :custom (org-roam-directory (file-truename "~/Documents/roam"))
-  :config (org-roam-db-autosync-mode))
-
-(use-package
   nerd-icons-dired
   :hook (dired-mode . nerd-icons-dired-mode))
 
